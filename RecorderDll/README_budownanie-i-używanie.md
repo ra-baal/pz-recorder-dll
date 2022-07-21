@@ -18,5 +18,9 @@ oraz dopisywać je w `CMakeLists.txt (add_executable)`.
 Visual Studio niestety średnio współpracuje,
 więc w nim dodajemy już utworzone pliku (add -> existing items).
 Z drugiej strony VS potrafi spytać czy ma korzystać z `CMakeLists`
-i wtedy np. nie zbuduje projektum jeśli jest tam wymieniony jakiś plik,
+i wtedy np. nie zbuduje projektu jeśli jest tam wymieniony jakiś plik,
 który nie istnieje.
+
+# Opis plików i katalogów
+
+*to-do*
