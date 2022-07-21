@@ -1,0 +1,9 @@
+cmd: cmake -S <your-path>/<point-cloud-recorder-dll>/RecorderDll -B <your-path>/<point-cloud-recorder-dll>/RecorderDll
+
+Obie ścieżki takie same
+
+
+Nowe pliki tworzyć ręcznie w struktruze katalogów (source i podkatalogi)
+oraz dopisywać je w `CMakeLists.txt (add_executable)`.
+Visual Studio niestety średnio współpracuje,
+więc w nim dodajemy już utworzone pliku (add -> existing items).
