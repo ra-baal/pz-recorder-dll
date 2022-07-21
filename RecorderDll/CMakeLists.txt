@@ -14,9 +14,9 @@ project( RecorderDll )
 # Tutaj dodawać wszystkie pliki.
 add_executable(
 	RecorderDll 
-	./source/main.cpp
-	./source/functions.h
-	./source/functions.cpp
+	./source/kinect2.h
+	./source/kinect2.cpp
+	./source/kinect2_grabber.h
 )
 
 
