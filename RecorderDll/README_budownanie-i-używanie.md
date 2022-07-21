@@ -13,6 +13,10 @@ cmake -S <your-path>/<point-cloud-recorder-dll>/RecorderDll -B <your-path>/<poin
 
 a jeszcze prościej uruchomić ją ze skryptu `CMake Solution Build.cmd`.
 
+## Wymagania
+- PCL 1.8 (wersja minimalna?)
+- KinectSDK2 (Kinect v2 wymaga)
+
 # Używanie
 
 Nowe pliki trzeba tworzyć ręcznie w struktruze katalogów (`source` i podkatalogi)
