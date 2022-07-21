@@ -1,0 +1,4 @@
+# Solucje i projekt należy wygenerować za pomocą cmake.
+# Instrukcja znajduje się w odpowiednim pliku.
+*.sln
+*.vcjproj
