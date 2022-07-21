@@ -6,7 +6,7 @@
 #define SAMPLE_API __declspec(dllimport)
 #endif
 
-extern "C" SAMPLE_API int kinect2_main( int argc, char* argv[] );
+extern "C" SAMPLE_API int kinect_v2_main( int argc, char* argv[] );
 
 extern "C" SAMPLE_API double test(double a, double b);
 

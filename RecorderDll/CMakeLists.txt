@@ -15,9 +15,14 @@ project( RecorderDll )
 add_executable(
 	RecorderDll 
 	./source/main.cpp
-	./source/kinect2.h
-	./source/kinect2.cpp
-	./source/kinect2_grabber.h
+	
+	./source/KinectV1/PluginPCL.h
+	./source/KinectV1/PluginPCL.cpp
+	./source/KinectV1/kinect_v1.h
+	
+	./source/KinectV2/kinect_v2.h
+	./source/KinectV2/kinect_v2.cpp
+	./source/KinectV2/kinect2_grabber.h
 )
 
 

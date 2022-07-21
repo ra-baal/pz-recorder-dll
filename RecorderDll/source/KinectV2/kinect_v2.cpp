@@ -26,7 +26,7 @@
 
 #include <WinUser.h> // Sprawdzanie czy klawisz wciœniêty
 
-#include "kinect2.h"
+#include "kinect_v2.h"
 
 typedef pcl::PointXYZRGBA PointType;
 
@@ -37,7 +37,7 @@ double test(double a, double b)
 }
 
 
-int kinect2_main( int argc, char* argv[] )
+int kinect_v2_main( int argc, char* argv[] )
 {
     // PCL Visualizer
     boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer(
