@@ -10,6 +10,7 @@
 
 // Kinect2Grabber is pcl::Grabber to retrieve the point cloud data from Kinect v2 using Kinect for Windows SDK 2.x.
 // This source code is licensed under the MIT license. Please see the License in License.txt.
+#pragma once
 
 #ifndef KINECT2_GRABBER
 #define KINECT2_GRABBER
@@ -23,6 +24,7 @@
 #include <pcl/point_cloud.h> // pcl::PointCloud etc.
 #include <thread> // For std::thread
 #include <boost/thread/mutex.hpp>
+#include "../additionals.h"
 		
 
 namespace pcl
@@ -43,6 +45,11 @@ namespace pcl
             typedef void ( signal_Kinect2_PointXYZI )( const std::shared_ptr<const pcl::PointCloud<pcl::PointXYZI>>& );
             typedef void ( signal_Kinect2_PointXYZRGB )( const std::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGB>>& );
             typedef void ( signal_Kinect2_PointXYZRGBA )( const std::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGBA>>& );
+
+            // RB: Dodane:
+            ColorType* GetColorBufferData();
+            int GetColorWidth();
+            int GetColorHeight();
 
         protected:
             boost::signals2::signal<signal_Kinect2_PointXYZ>* signal_PointXYZ;

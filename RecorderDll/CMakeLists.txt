@@ -1,5 +1,4 @@
 # # CMake
-# - Jako miejsce budowania wybrać katalog głowny, a nie podkatalog build?
 # - Trzeba mieć zainstalowaną wersję Visual Studio, na którą będzie tworzona solucja.
 #
 # W przypadku błędu "could not find any instance of Visual Studio"
@@ -15,6 +14,9 @@ project( RecorderDll )
 add_executable(
 	RecorderDll 
 	./source/main.cpp
+	./source/ICloudRecorder.h
+	./source/additionals.h
+	./source/KinectV2_Tests.h
 	
 	./source/KinectV1/PluginPCL.h
 	./source/KinectV1/PluginPCL.cpp
@@ -23,6 +25,9 @@ add_executable(
 	./source/KinectV2/kinect_v2.h
 	./source/KinectV2/kinect_v2.cpp
 	./source/KinectV2/kinect2_grabber.h
+	./source/KinectV2/kinect2_grabber.cpp
+	./source/KinectV2/KinectV2.h
+	./source/KinectV2/KinectV2.cpp
 )
 
 
