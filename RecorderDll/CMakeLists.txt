@@ -23,7 +23,7 @@ add_executable(
 	./source/KinectV2/kinect_v2.h
 	./source/KinectV2/kinect_v2.cpp
 	./source/KinectV2/kinect2_grabber.h
-	./source/KinectV2/kinect_v2.cpp
+	./source/KinectV2/kinect2_grabber.cpp
 )
 
 
