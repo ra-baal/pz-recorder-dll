@@ -3,6 +3,7 @@
 #include <pcl/visualization/pcl_visualizer.h>
 #include "ICloudRecorder.h"
 #include "KinectV2/KinectV2.h"
+#include "DllApi/DllApi.h"
 
 #include <pcl/io/pcd_io.h> // For pcl::io::savepcdfileascii
 
@@ -27,6 +28,61 @@ class Timer
 
 };
 
+
+
+void kinectV2_print_color_data_DllApi()
+{
+    void* cloudRecorder = KinectV2_New();
+	KinectV2_Start(cloudRecorder);
+
+    std::cout << "Nakieruj na kolor pierwszy" << std::endl;
+    Timer timer(5); // Record for given secs.
+    while( !timer.IsUp() )
+    {
+
+    }
+
+    auto colors = KinectV2_GetColorPixelsPtr(cloudRecorder);
+
+    if (colors.Data != nullptr)
+    {
+        byte* asbytes = (byte*)(colors.Data);
+            
+        for (int i = 0; i < 5; i++)
+        {
+            std::cout << "r:" << (unsigned int)asbytes[0] << " g:" << (unsigned int)asbytes[1] << " b:" << (unsigned int)asbytes[2] << " Reserved:" << (unsigned int)asbytes[3] << std::endl;
+            asbytes += 4;
+        }
+
+    }
+
+    std::cout << "Nakieruj na kolor drugi" << std::endl;
+
+    Timer timer2(5); // Record for given secs.
+    while( !timer2.IsUp() )
+    {
+
+    }
+
+    auto colors2 = KinectV2_GetColorPixelsPtr(cloudRecorder);
+
+    if (colors2.Data != nullptr)
+    {
+        byte* asbytes = (byte*)(colors2.Data);
+            
+        for (int i = 0; i < 5; i++)
+        {
+            std::cout << "r:" << (unsigned int)asbytes[0] << " g:" << (unsigned int)asbytes[1] << " b:" << (unsigned int)asbytes[2] << " Reserved:" << (unsigned int)asbytes[3] << std::endl;
+            asbytes += 4;
+        }
+
+    }
+
+    KinectV2_Delete(cloudRecorder);
+}
+
+
+
 void kinectV2_print_color_data()
 {
     std::shared_ptr<ICloudRecorder> cloudRecorder = std::make_shared<KinectV2>();
@@ -39,10 +95,7 @@ void kinectV2_print_color_data()
 
     }
 
-
-    
     auto colorPixels = cloudRecorder->GetColorPixels();
-
 
     if (colorPixels._data != nullptr)
     {
@@ -65,9 +118,7 @@ void kinectV2_print_color_data()
 
     }
 
-
     auto colorPixels2 = cloudRecorder->GetColorPixels();
-
 
     if (colorPixels2._data != nullptr)
     {
@@ -80,7 +131,6 @@ void kinectV2_print_color_data()
         }
 
     }
-
 
 }
 

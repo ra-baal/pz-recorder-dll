@@ -14,6 +14,7 @@ public:
 	virtual void Start() override;
 	virtual void Stop() override;
 	virtual ColorPixels<ColorType> GetColorPixels() override;
+	Colors GetColorPixelsPtr();
 	virtual pcl::PointCloud<PointType>::ConstPtr GetPointCloud() override;
 
 private: 

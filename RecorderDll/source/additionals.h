@@ -6,8 +6,17 @@ typedef unsigned char byte;
 typedef pcl::PointXYZRGBA PointType;
 typedef RGBQUAD ColorType;
 
+struct Colors
+{
+	int Width;
+	int Height;
+	ColorType* Data;
+};
+
 /// <summary>
 /// Wszystko publiczne!
+/// Ta struktura to przerost formy nad potrzebami.
+/// Raczej do wyrzucenia.
 /// </summary>
 template<typename DataType>
 struct ColorPixels

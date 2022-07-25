@@ -87,6 +87,21 @@ KinectV2::GetColorPixels()
    
 }
 
+Colors
+KinectV2::GetColorPixelsPtr()
+{
+	std::clog << "KinectV2::GetColorPixelsPtr()" << std::endl;
+
+    Colors colors =
+    {
+        _kinect2grabber->GetColorWidth(),
+        _kinect2grabber->GetColorHeight(),
+        _kinect2grabber->GetColorBufferData()
+    };
+
+    return colors;
+}
+
 pcl::PointCloud<PointType>::ConstPtr
 KinectV2::GetPointCloud()
 {

@@ -28,6 +28,9 @@ add_executable(
 	./source/KinectV2/kinect2_grabber.cpp
 	./source/KinectV2/KinectV2.h
 	./source/KinectV2/KinectV2.cpp
+
+	./source/DllApi/DllApi.h
+	./source/DllApi/DllApi.cpp
 )
 
 
