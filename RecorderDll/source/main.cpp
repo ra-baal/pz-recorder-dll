@@ -1,13 +1,26 @@
-
-#include "KinectV1/kinect_v1.h"
 #include "KinectV2/kinect_v2.h"
+//#include "KinectV1/kinect_v1.h"
+//#include "ICloudRecorder.h"
+//#include "KinectV2/KinectV2.h"
+#include "KinectV2_Tests.h"
 
-#include <cstddef>
-
+// todos:
+// - robiæ kopiê chmury na bie¿¹co i wrzucaæ do kolejki
+// - nastêpnie oddzielny w¹tek (proces?) bêdzie to pokolei zapisywa³ do plików
+// powinno to trochê przyspiezyc wtedy (frames per sec)
 
 int main()
 {
-	kinect_v1_main();
-	//kinect_v2_main(0, NULL);
+	//kinect_v1_main();
+	//kinect_v2_main_UnaNancyOwen();
+	//kinect_v2_main_wz18207();
+
+    //kinectV2_visualization();
+	//kinectV2_save_files();
+	//kinectV2_print_color_data();
+	//kinectV2_print_color_data_DllApi();
+
+
 }
+
 

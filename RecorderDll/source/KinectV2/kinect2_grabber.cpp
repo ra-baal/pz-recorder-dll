@@ -458,5 +458,26 @@ namespace pcl
         return cloud;
     }
 
+    /// <summary>
+    /// Zwraca skopiowane wartoœci z bufora kolorów.
+    /// </summary>
+    /// <returns></returns>
+    ColorType* pcl::Kinect2Grabber::GetColorBufferData()
+    {
+        return this->colorBuffer.data();
+    }
+
+    int pcl::Kinect2Grabber::GetColorWidth()
+    {
+        return this->colorWidth;
+    
+    }
+
+    int pcl::Kinect2Grabber::GetColorHeight()
+    {
+        return this->colorHeight;
+    
+    }
+
 
 } // end namespace

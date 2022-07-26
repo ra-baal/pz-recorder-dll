@@ -339,5 +339,7 @@ ASALocalRun/
 *.exe
 
 
+# Inne.
+*.pcd
 
 
