@@ -75,20 +75,20 @@ KinectV2::Stop()
 
 }
 
-ColorPixels<ColorType>
-KinectV2::GetColorPixels()
-{
-	std::clog << "KinectV2::GetColorPixels()" << std::endl;
-
-    // ToDo: Ta kopia jest raczej nie potrzebna.
-    // To i tak ma byæ tylko do odczytu na bie¿¹co.
-    // I tak tylko na podgl¹d ma iœæ.
-    return ColorPixels<ColorType>(_kinect2grabber->GetColorWidth(), _kinect2grabber->GetColorHeight(), _kinect2grabber->GetColorBufferData());
-   
-}
+//ColorPixels<ColorType>
+//KinectV2::GetColorPixels()
+//{
+//	std::clog << "KinectV2::GetColorPixels()" << std::endl;
+//
+//    // ToDo: Ta kopia jest raczej nie potrzebna.
+//    // To i tak ma byæ tylko do odczytu na bie¿¹co.
+//    // I tak tylko na podgl¹d ma iœæ.
+//    return ColorPixels<ColorType>(_kinect2grabber->GetColorWidth(), _kinect2grabber->GetColorHeight(), _kinect2grabber->GetColorBufferData());
+//   
+//}
 
 Colors
-KinectV2::GetColorPixelsPtr()
+KinectV2::GetColorPixels()
 {
 	std::clog << "KinectV2::GetColorPixelsPtr()" << std::endl;
 

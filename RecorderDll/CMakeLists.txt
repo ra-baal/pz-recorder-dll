@@ -15,6 +15,10 @@ add_executable(
 	RecorderDll 
 	./source/main.cpp
 	./source/ICloudRecorder.h
+	./source/IRecordingManager.h
+	./source/RecorderState.h
+	./source/RecordingManager.h
+	./source/RecordingManager.cpp
 	./source/additionals.h
 	./source/KinectV2_Tests.h
 	
@@ -29,8 +33,10 @@ add_executable(
 	./source/KinectV2/KinectV2.h
 	./source/KinectV2/KinectV2.cpp
 
-	./source/DllApi/DllApi.h
-	./source/DllApi/DllApi.cpp
+	./source/API/DllApi.h
+	./source/API/DllApi.cpp
+	./source/API/RecordingManagerAPI.h
+	./source/API/RecordingManagerAPI.cpp
 )
 
 

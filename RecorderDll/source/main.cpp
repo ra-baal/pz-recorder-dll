@@ -18,7 +18,7 @@ int main()
     //kinectV2_visualization();
 	//kinectV2_save_files();
 	//kinectV2_print_color_data();
-	kinectV2_print_color_data_DllApi();
+	//kinectV2_print_color_data_DllApi();
 
 
 }

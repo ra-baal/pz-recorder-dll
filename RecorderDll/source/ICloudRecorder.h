@@ -10,7 +10,7 @@ class ICloudRecorder
 public:
 	virtual void Start() = 0;
 	virtual void Stop() = 0;
-	virtual ColorPixels<ColorType> GetColorPixels() = 0;
+	virtual Colors GetColorPixels() = 0;
 	virtual pcl::PointCloud<PointType>::ConstPtr GetPointCloud() = 0;
 
 };
