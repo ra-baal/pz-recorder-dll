@@ -461,7 +461,7 @@ bool grabPointCloudFromKinect(float** resultVertsX, float** resultVertsY, float*
 */
 
 /// There is not needed main function in dll library?
-int kinect_v1_main() 
+void kinect_v1_main() 
 {	
 	//getchar();
 
@@ -469,27 +469,35 @@ int kinect_v1_main()
 	//std::cout << readCloud("test.pcd") << std::endl;
 	try
 	{
+		// Tworzenie tego obiektu urz¹dzenia tutaj jest chyba niepotrzebne,
+		// bo dok³adnie to samo potem dzieje siê w KinectCloudGrabber::grabCloud().
 		pcl::io::openni2::OpenNI2DeviceManager manager;
 		pcl::io::openni2::OpenNI2Device::Ptr device = manager.getAnyDevice();
+
 		std::cout << "Device name: " << device->getName() << std::endl;
 
 		device->setSynchronization(true);
 		std::cout << "Synchronization set." << std::endl;
 		readKinectCloud(maincloud);
+		std::cout << "Cloud read." << std::endl;
 	}
 	catch (std::exception &e)
 	{
 		std::cout << e.what() << std::endl;
 	}
 
-	removeBiggestPlane(100, 0.02);
+	std::cout << "0" << std::endl;
+	//removeBiggestPlane(100, 0.02);
+	std::cout << "1" << std::endl;
 	getClusters(0.02, 100, 25000);
+	std::cout << "2" << std::endl;
 	getClustersCount();
+	std::cout << "3" << std::endl;
 
-	for (const int i : clusteredcloudsindices[0])
-	{
-		std::cout << " : " << i;
-	}
+	//for (const int i : clusteredcloudsindices[0])
+	//{
+	//	std::cout << " : " << i;
+	//}
 
 	//std::cout << std::endl;
 
@@ -499,10 +507,8 @@ int kinect_v1_main()
 	//std::cout << "3 -> " << clusteredclouds[3]->size() << std::endl;
 	//std::cout << "4 -> " << clusteredclouds[4]->size() << std::endl;
 
-	std::cout << "Press enter";
+	std::cout << "KinectV1: end" << std::endl;
 
-	getchar();
-	return 0;
 }
 
 

@@ -12,7 +12,7 @@ project( RecorderDll )
 
 # Tutaj dodawać wszystkie pliki.
 add_executable(
-	RecorderDll 
+	RecorderDll
 	./source/main.cpp
 	./source/ICloudRecorder.h
 	./source/IRecordingManager.h
@@ -20,18 +20,27 @@ add_executable(
 	./source/RecordingManager.h
 	./source/RecordingManager.cpp
 	./source/additionals.h
-	./source/KinectV2_Tests.h
+	./source/main_Tests.h
 	
+
 	./source/KinectV1/PluginPCL.h
 	./source/KinectV1/PluginPCL.cpp
 	./source/KinectV1/kinect_v1.h
-	
+
+	./source/KinectV1/KinectV1Grabber.h
+	./source/KinectV1/KinectV1Grabber.cpp
+	./source/KinectV1/KinectV1.h
+	./source/KinectV1/KinectV1.cpp
+
+
 	./source/KinectV2/kinect_v2.h
 	./source/KinectV2/kinect_v2.cpp
+
 	./source/KinectV2/kinect2_grabber.h
 	./source/KinectV2/kinect2_grabber.cpp
 	./source/KinectV2/KinectV2.h
 	./source/KinectV2/KinectV2.cpp
+
 
 	./source/API/DllApi.h
 	./source/API/DllApi.cpp

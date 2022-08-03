@@ -13,6 +13,15 @@ struct Colors
 	ColorType* Data;
 };
 
+class DeviceNotFoundException : public std::runtime_error
+{
+public:
+	DeviceNotFoundException(std::string message)
+	: std::runtime_error(message.c_str()) {}
+
+};
+
+
 /// <summary>
 /// Wszystko publiczne!
 /// Ta struktura to przerost formy nad potrzebami.
