@@ -32,3 +32,7 @@ Solution Explorer w VS można przełączyć w tryb wyświetlania rzeczywistej st
 # Opis plików i katalogów
 
 *to-do*
+
+**CMake Solution Build.cmd** - tworzy solucję VS
+**Delete Solution Files.cmd** - usuwa pliki solucji
+
