@@ -1,17 +1,36 @@
 #include "KinectV1Grabber.h"
 #include "../additionals.h"
 
+//class NewColorFrameListener : openni::VideoStream::NewFrameListener
+//{
+//	// Inherited via NewFrameListener
+//	virtual void onNewFrame(openni::VideoStream& viedoStream) override 
+//	{
+//		
+//	}
+//
+//};
+
+
 KinectV1Grabber::KinectV1Grabber() :
 	_interface(new pcl::io::OpenNI2Grabber()),
 	_viewerWasStopped(false)
 {
 	pcl::io::openni2::OpenNI2DeviceManager manager;
 	_device = manager.getAnyDevice();
-
+	
 	if (_device == nullptr)
         throw DeviceNotFoundException("Nie znaleziono Kinecta V1.");
 
 	_device->setSynchronization(true);
+
+	 pcl::io::openni2::OpenNI2Device::StreamCallbackFunction colorCallback = 
+	 [this](openni::VideoStream& stream)
+	 {
+		stream.readFrame(&_colorFrame);
+	 };
+
+	_device->setColorCallback(colorCallback);
 }
 
 void KinectV1Grabber::cloud_cb_(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr& cloud)
@@ -30,16 +49,34 @@ pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr KinectV1Grabber::grabCloud()
 	{
 		cloud_cb_(std::forward<decltype(PH1)>(PH1));
 	};
-
+	
 	_interface->registerCallback(f);
 	_interface->start();
 
 	while (!_viewerWasStopped)
 	{
-		std::this_thread::sleep_for(std::chrono::seconds(1));
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
 
 	_interface->stop();
 
 	return cloudFromKinect;
+}
+
+ColorType* KinectV1Grabber::GetColorBufferData()
+{
+	std::clog << "KinectV1Grabber::GetColorBufferData()" << std::endl;
+    return (ColorType*)_colorFrame.getData();
+}
+
+int KinectV1Grabber::GetColorWidth()
+{
+	std::clog << "KinectV1Grabber::GetColorWidth()" << std::endl;
+    return _colorFrame.getWidth();
+}
+
+int KinectV1Grabber::GetColorHeight()
+{
+	std::clog << "KinectV1Grabber::GetColorHeight()" << std::endl;
+    return _colorFrame.getHeight();
 }

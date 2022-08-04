@@ -15,6 +15,7 @@ public:
 	virtual Colors GetColorPixels() override;
 	//Colors GetColorPixelsPtr();
 	virtual pcl::PointCloud<PointType>::ConstPtr GetPointCloud() override;
+	virtual void RecordOneFrame(std::string filepath) override;
 
 private: 
 	std::shared_ptr<KinectV1Grabber> _kinectV1Grabber;

@@ -2,6 +2,8 @@
 
 #include <pcl/io/openni2_grabber.h>
 #include <pcl/io/openni2/openni2_device_manager.h>
+#include <OpenNI.h>
+#include "../additionals.h"
 
 class KinectV1Grabber
 {
@@ -12,9 +14,17 @@ private:
 
 	void cloud_cb_(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr& cloud);
 
+	openni::VideoFrameRef _colorFrame;
+
+
 public:
 	pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr cloudFromKinect;
 
 	KinectV1Grabber();
 	pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr grabCloud();
+
+	ColorType* GetColorBufferData();
+    int GetColorWidth();
+    int GetColorHeight();
+
 };

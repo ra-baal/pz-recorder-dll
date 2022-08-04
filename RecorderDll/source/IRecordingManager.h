@@ -8,7 +8,7 @@ class IRecordingManager
         //FindRecorders() ??
         //virtual RecorderState GetState() = 0;
         virtual int GetRecordersNumber() = 0;
-        virtual Colors GetColorBitmap() = 0;
+        virtual Colors* GetColorBitmaps() = 0;
         virtual void RecordingMode() = 0;
         virtual void PreviewMode() = 0;
 };

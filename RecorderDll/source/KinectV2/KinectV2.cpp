@@ -1,5 +1,7 @@
 #include "KinectV2.h"
 #include "kinect_v2.h"
+#include <pcl/io/pcd_io.h>
+
 
 KinectV2::KinectV2() 
 {
@@ -28,6 +30,8 @@ KinectV2::Start()
 	std::function<void( const pcl::PointCloud<PointType>::ConstPtr& )> callbackFunction =
         [this]( const pcl::PointCloud<PointType>::ConstPtr& ptr )
         {
+	        std::clog << "KinectV2 - callbackFunction" << std::endl;
+            
             // Sekcja krytyczna. //
             // Jeœli dobrze rozumiem, to tutaj bezwzglêdnie zawsze zak³adamy blokadê,
             // poniewa¿ nie chcemy ograniczaæ mo¿liwoœci przechwytywania kolejnych chmur z kinecta.
@@ -37,6 +41,7 @@ KinectV2::Start()
             // todo: Tutaj kopiowaæ do kolejki?
 
             this->_pointCloud = ptr->makeShared();
+            pcl::io::savePCDFileASCII("plik-2.pcd", *(this->_pointCloud));
 
             //pcl::io::savePCDFileASCII("ascii-frame" + std::to_string(frame), *cloud);
             //pcl::io::savePCDFileBinary("binary-frame" + std::to_string(frame), *cloud);
@@ -80,7 +85,7 @@ KinectV2::Stop()
 //{
 //	std::clog << "KinectV2::GetColorPixels()" << std::endl;
 //
-//    // ToDo: Ta kopia jest raczej nie potrzebna.
+//    // ToDo: Ta kopia jest raczej niepotrzebna.
 //    // To i tak ma byæ tylko do odczytu na bie¿¹co.
 //    // I tak tylko na podgl¹d ma iœæ.
 //    return ColorPixels<ColorType>(_kinect2grabber->GetColorWidth(), _kinect2grabber->GetColorHeight(), _kinect2grabber->GetColorBufferData());
@@ -111,20 +116,47 @@ KinectV2::GetPointCloud()
     // Jeœli dobrze rozumiem, to tutaj tylko próbujemy za³o¿yæ blokadê,
     // I uda to siê tylko wtedy gdy nie ma jej za³o¿onej w funkcji callback.
     // Poniewa¿ nie chcemy ograniczaæ mo¿liwoœci przechwytywania kolejnych chmur z kinecta.
-    //boost::mutex::scoped_try_lock lock(_mutex);
-    //if (lock.owns_lock())
-    //{
-	//    std::clog << "owns" << std::endl;
+    boost::mutex::scoped_try_lock lock(_mutex);
+    if (lock.owns_lock())
+    {
+	    std::clog << "owns" << std::endl;
         return _pointCloud;
-    //}
+    }
     // Koniec sekcji krytycznej. //
-    //else
-    //{
-	//    std::clog << "not owns" << std::endl;
-    //    return nullptr;
-    //}
+    else
+    {
+	    std::clog << "not owns" << std::endl;
+        return nullptr;
+    }
 
     // Za ma³o klatek na sek siê zapisuje. Lepiej kopiowaæ w pamiêci chmury i wrzucaæ do kolejki
     // a w oddzielnym w¹tku/procesie zapisywaæ dopiero po kolei na dysk.
+
+}
+
+void 
+KinectV2::RecordOneFrame(std::string filepath)
+{
+   /* boost::mutex::scoped_try_lock lock(_mutex);
+    if (lock.owns_lock())
+    {
+        auto cloud = _pointCloud;
+        pcl::io::savePCDFileASCII(filepath, *cloud);
+    }
+    else
+    {
+    
+    }*/
+    
+    auto cloud = _pointCloud;
+    if( cloud )
+    {
+	    std::clog << "KinectV2 - cloud is not null" << std::endl;
+        pcl::io::savePCDFileASCII(filepath, *cloud);
+    }
+    else
+    {
+	    std::clog << "KinectV2 - cloud is null" << std::endl;
+    }
 
 }

@@ -10,6 +10,8 @@
 #include <pcl/io/pcd_io.h> // For pcl::io::savepcdfileascii
 #include <thread>
 
+#include "RecordingManager.h"
+
 class Timer
 {
     private:
@@ -17,9 +19,9 @@ class Timer
         time_t _countdown;
 
     public:
-        Timer(time_t countdown)
+        Timer(time_t seconds)
         {
-            _countdown = countdown;
+            _countdown = seconds;
             _start = time(nullptr);
         }
 
@@ -28,10 +30,49 @@ class Timer
             return time(nullptr) > _start + _countdown;
         }
 
+        void Wait()
+        {
+            while (!IsUp());
+        }
+
 
 };
 
-void kinectV1_class_test()
+void recordingManager_classTest()
+{
+    std::cout << 0 << std::endl;
+
+    RecordingManager manager;
+
+    std::cout << 1 << std::endl;
+
+    //std::cout << "Colors* GetColorBitmaps: " << manager.GetColorBitmaps() << std::endl;
+
+    std::cout << 2 << std::endl;
+
+    std::cout << "int GetRecordersNumber: " << manager.GetRecordersNumber() << std::endl;
+
+    std::cout << 3 << std::endl;
+
+    manager.RecordingMode();
+
+    std::cout << 4 << std::endl;
+
+    Timer timer(10);
+
+    std::cout << 5 << std::endl;
+
+    timer.Wait();
+
+    std::cout << 6 << std::endl;
+
+    manager.PreviewMode();
+
+    std::cout << 7 << std::endl;
+
+}
+
+void kinectV1_classTest()
 {
     auto kinectV1 = std::make_shared<KinectV1>();
 
@@ -48,7 +89,7 @@ void kinect_threads()
     thread_V2.join();
 }
 
-void kinectV2_save_files()
+void kinectV2_save_files(int duration_seconds)
 {
 	std::shared_ptr<ICloudRecorder> cloudRecorder = std::make_shared<KinectV2>();
 	cloudRecorder->Start();
@@ -56,7 +97,7 @@ void kinectV2_save_files()
     std::vector<std::string> filenames;
 
     int frame = 0;
-    Timer timer(60); // Record for given secs.
+    Timer timer(duration_seconds); // Record for given secs.
     while( !timer.IsUp() )
     {
         pcl::PointCloud<PointType>::ConstPtr cloud = cloudRecorder->GetPointCloud();

@@ -19,13 +19,15 @@ int main()
 	//kinect_v2_main_wz18207();
 
     //kinectV2_visualization();
-	//kinectV2_save_files();
+	//kinectV2_save_files(10);
 	//kinectV2_print_color_data();
 	//kinectV2_print_color_data_DllApi();
 
 	//kinect_threads();
 
-	kinectV1_class_test();
+	//kinectV1_class_test();
+
+	recordingManager_classTest();
 
 	std::clog << "main: end" << std::endl;
 	return 0;

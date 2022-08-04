@@ -23,9 +23,9 @@ int RecordingManager_GetRecordersNumber(void* recordingManager)
     return ((IRecordingManager*)recordingManager)->GetRecordersNumber();
 }
 
-Colors RecordingManager_GetColorBitmap(void* recordingManager)
+Colors* RecordingManager_GetColorBitmaps(void* recordingManager)
 {
-    return ((IRecordingManager*)recordingManager)->GetColorBitmap();
+    return ((IRecordingManager*)recordingManager)->GetColorBitmaps();
 }
 
 void RecordingManager_RecordingMode(void* recordingManager)

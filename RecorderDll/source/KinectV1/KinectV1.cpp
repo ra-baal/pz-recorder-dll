@@ -1,6 +1,6 @@
 #include "KinectV1.h"
-
 #include "../additionals.h"
+#include <pcl/io/pcd_io.h>
 
 KinectV1::KinectV1() 
 {
@@ -42,23 +42,37 @@ KinectV1::Stop()
 Colors
 KinectV1::GetColorPixels()
 {
-	std::clog << "KinectV1::GetColorPixelsPtr()" << std::endl;
+	std::clog << "KinectV1::GetColorPixels()" << std::endl;
 
-    throw std::logic_error("Nie zaimplementowano");
-
-    Colors colors =
+    try 
     {
-        //_kinect2grabber->GetColorWidth(),
-        //_kinect2grabber->GetColorHeight(),
-        //_kinect2grabber->GetColorBufferData()
-    };
+        Colors colors = {
+            _kinectV1Grabber->GetColorWidth(),
+            _kinectV1Grabber->GetColorHeight(),
+            _kinectV1Grabber->GetColorBufferData()
+        };
+        return colors;
+    }
+    catch (...)
+    {
+	    std::clog << "KinectV1::GetColorPixels() - catch" << std::endl;
+    }
 
-    return colors;
+    return Colors();
 }
 
+// ToDo: do zmiany.
+// Get nie mo¿e polegaæ na tym, ¿e dopiero tê chmurê nagramy.
 pcl::PointCloud<PointType>::ConstPtr
 KinectV1::GetPointCloud()
 {
     return _kinectV1Grabber->grabCloud();
 
+}
+
+void 
+KinectV1::RecordOneFrame(std::string filepath)
+{
+    auto cloud = _kinectV1Grabber->grabCloud();
+    pcl::io::savePCDFileASCII(filepath, *cloud);
 }
