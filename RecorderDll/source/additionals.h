@@ -1,10 +1,15 @@
 #pragma once
 #include <pcl/point_types.h>
 #include <Windows.h> // For RGBQUAD
+#include <chrono>
 
 typedef unsigned char byte;
 typedef pcl::PointXYZRGBA PointType;
 typedef RGBQUAD ColorType;
+
+// Nie miesza napisów z ró¿nych w¹tków.
+#define LOG(strText) //std::clog << ( std::stringstream() << std::this_thread::get_id() << ": " << strText << "\n" ).str() ;
+#define LOG_IMPORTANT(strText) std::clog << ( std::stringstream() << std::this_thread::get_id() << ": " << strText << "\n" ).str() ;
 
 struct Colors
 {

@@ -1,36 +1,44 @@
 #include "KinectV2.h"
 #include "kinect_v2.h"
 #include <pcl/io/pcd_io.h>
+#include "../additionals.h"
 
 
 KinectV2::KinectV2() 
 {
-	std::clog << "KinectV2::KinectV2()" << std::endl;
+	LOG("KinectV2::KinectV2()")
 	_kinect2grabber = std::make_shared<pcl::Kinect2Grabber>();
 
 	// RB: Coœ jest nie tak w implementacji Kinect2Grabber 
 	// i w przypadku gdy utworzy siê jego obiekt,
 	// a nastêpnie bez wystartowania obiekt zostanie zwolniony,
 	// to wywala program. Dlatego te¿ na razie od razu robiê start.
-	_kinect2grabber->start();
+	//_kinect2grabber->start(); // przeniesino do Start(), ale nadal musi byæ w konstruktorze.
+
+    Start();
 
 }
 
 KinectV2::~KinectV2()
 {
     Stop();
+
+    if (_connection.connected())
+        _connection.disconnect();
 }
 
 void
 KinectV2::Start()
 {
-	std::clog << "KinectV2::Start()" << std::endl;
+	LOG("KinectV2::Start()")
+
+	_kinect2grabber->start();
 
     // Retrieved Point Cloud Callback Function
 	std::function<void( const pcl::PointCloud<PointType>::ConstPtr& )> callbackFunction =
         [this]( const pcl::PointCloud<PointType>::ConstPtr& ptr )
         {
-	        std::clog << "KinectV2 - callbackFunction" << std::endl;
+            LOG("KinectV2::Start() - callbackFunction")
             
             // Sekcja krytyczna. //
             // Jeœli dobrze rozumiem, to tutaj bezwzglêdnie zawsze zak³adamy blokadê,
@@ -41,7 +49,6 @@ KinectV2::Start()
             // todo: Tutaj kopiowaæ do kolejki?
 
             this->_pointCloud = ptr->makeShared();
-            pcl::io::savePCDFileASCII("plik-2.pcd", *(this->_pointCloud));
 
             //pcl::io::savePCDFileASCII("ascii-frame" + std::to_string(frame), *cloud);
             //pcl::io::savePCDFileBinary("binary-frame" + std::to_string(frame), *cloud);
@@ -52,14 +59,21 @@ KinectV2::Start()
 
     try
     {
+        LOG("KinectV2::Start() - try")
+
         _connection = _kinect2grabber->registerCallback( callbackFunction );
-        std::clog << "_kinect2grabber->registerCallback successful :)" << std::endl;
+        LOG("_kinect2grabber->registerCallback successful :)")
     }
     catch (pcl::IOException& e)
     {
-        std::clog << "_kinect2grabber->registerCallback unsuccessful :(" << std::endl;
-        std::clog << "what: " << e.what() << std::endl;
-    
+        LOG("KinectV2::Start() - catch (pcl::IOException& e)")
+
+        LOG("_kinect2grabber->registerCallback unsuccessful :(")
+        LOG("what: " << e.what())
+    }
+    catch(...)
+    {
+        LOG("KinectV2::Start() - catch(...)")
     }
 
 	// Na razie metoda start jest uruchamiana w konstruktorze.
@@ -71,12 +85,12 @@ KinectV2::Start()
 void
 KinectV2::Stop()
 {
-	std::clog << "KinectV2::Stop()" << std::endl;
+	LOG("KinectV2::Stop()")
 
     _kinect2grabber->stop();
     
-    if (_connection.connected())
-        _connection.disconnect();
+    //if (_connection.connected())
+    //    _connection.disconnect();
 
 }
 
@@ -95,7 +109,7 @@ KinectV2::Stop()
 Colors
 KinectV2::GetColorPixels()
 {
-	std::clog << "KinectV2::GetColorPixelsPtr()" << std::endl;
+	LOG("KinectV2::GetColorPixelsPtr()")
 
     Colors colors =
     {
@@ -119,13 +133,13 @@ KinectV2::GetPointCloud()
     boost::mutex::scoped_try_lock lock(_mutex);
     if (lock.owns_lock())
     {
-	    std::clog << "owns" << std::endl;
+	    LOG("owns")
         return _pointCloud;
     }
     // Koniec sekcji krytycznej. //
     else
     {
-	    std::clog << "not owns" << std::endl;
+	    LOG("not owns")
         return nullptr;
     }
 
@@ -147,16 +161,21 @@ KinectV2::RecordOneFrame(std::string filepath)
     {
     
     }*/
+
+    //Start();
     
     auto cloud = _pointCloud;
-    if( cloud )
+    if( cloud != nullptr )
     {
-	    std::clog << "KinectV2 - cloud is not null" << std::endl;
+        LOG("KinectV2::RecordOneFrame(std::string filepath) - cloud is good")
+	   
         pcl::io::savePCDFileASCII(filepath, *cloud);
     }
     else
     {
-	    std::clog << "KinectV2 - cloud is null" << std::endl;
+        LOG("KinectV2::RecordOneFrame(std::string filepath) - cloud is nullptr")
     }
+
+    //Stop();
 
 }

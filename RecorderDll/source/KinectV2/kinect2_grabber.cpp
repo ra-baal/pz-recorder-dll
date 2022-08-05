@@ -45,6 +45,8 @@ namespace pcl
     , signal_PointXYZRGB( nullptr )
     , signal_PointXYZRGBA( nullptr )
     {
+        LOG("pcl::Kinect2Grabber::Kinect2Grabber()")
+
         // Create Sensor Instance
         result = GetDefaultKinectSensor( &sensor );
         if( FAILED( result ) ){
@@ -156,6 +158,8 @@ namespace pcl
 
     pcl::Kinect2Grabber::~Kinect2Grabber() throw()
     {
+	    LOG("pcl::Kinect2Grabber::~Kinect2Grabber()")
+        
         stop();
 
         disconnect_all_slots<signal_Kinect2_PointXYZ>();
@@ -181,6 +185,8 @@ namespace pcl
 
     void pcl::Kinect2Grabber::start()
     {
+        LOG("pcl::Kinect2Grabber::start()")
+
         // Open Color Frame Reader
         result = colorSource->OpenReader( &colorReader );
         if( FAILED( result ) ){
@@ -206,16 +212,22 @@ namespace pcl
 
     void pcl::Kinect2Grabber::stop()
     {
+        LOG("pcl::Kinect2Grabber::stop()")
+        
         boost::unique_lock<boost::mutex> lock( mutex );
 
         quit = true;
         running = false;
 
         lock.unlock();
+
+        LOG("end pcl::Kinect2Grabber::stop()")
     }
 
     bool pcl::Kinect2Grabber::isRunning() const
     {
+        LOG("pcl::Kinect2Grabber::isRunning()")
+
         boost::unique_lock<boost::mutex> lock( mutex );
 
         return running;
@@ -226,18 +238,26 @@ namespace pcl
 
     std::string pcl::Kinect2Grabber::getName() const
     {
+        LOG("pcl::Kinect2Grabber::getName()")
+        
         return std::string( "kinect2grabber" );
     }
 
     float pcl::Kinect2Grabber::getFramesPerSecond() const
     {
+        LOG("pcl::Kinect2Grabber::getFramesPerSecond()")
+
         return 30.0f;
     }
 
     void pcl::Kinect2Grabber::threadFunction()
     {
+        LOG("pcl::Kinect2Grabber::threadFunction()")
+
         while( !quit )
         {
+            //LOG("pcl::Kinect2Grabber::threadFunction() - while")
+
             boost::unique_lock<boost::mutex> lock( mutex );
 
             // Acquire Latest Color Frame
@@ -298,6 +318,8 @@ namespace pcl
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr pcl::Kinect2Grabber::convertDepthToPointXYZ( UINT16* depthBuffer )
     {
+        LOG("pcl::Kinect2Grabber::convertDepthToPointXYZ( UINT16* depthBuffer )")
+
         pcl::PointCloud<pcl::PointXYZ>::Ptr cloud( new pcl::PointCloud<pcl::PointXYZ>() );
 
         cloud->width = static_cast<uint32_t>( depthWidth );
@@ -330,6 +352,8 @@ namespace pcl
 
     pcl::PointCloud<pcl::PointXYZI>::Ptr pcl::Kinect2Grabber::convertInfraredDepthToPointXYZI( UINT16* infraredBuffer, UINT16* depthBuffer )
     {
+        LOG("pcl::Kinect2Grabber::convertInfraredDepthToPointXYZI( UINT16* infraredBuffer, UINT16* depthBuffer )")
+
         pcl::PointCloud<pcl::PointXYZI>::Ptr cloud( new pcl::PointCloud<pcl::PointXYZI>() );
 
         cloud->width = static_cast<uint32_t>( depthWidth );
@@ -365,6 +389,8 @@ namespace pcl
 
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr pcl::Kinect2Grabber::convertRGBDepthToPointXYZRGB( RGBQUAD* colorBuffer, UINT16* depthBuffer )
     {
+        //LOG("pcl::Kinect2Grabber::convertRGBDepthToPointXYZRGB( RGBQUAD* colorBuffer, UINT16* depthBuffer )")
+
         // INFO: Zamiana std ns boost shared_ptr
         pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud( new pcl::PointCloud<pcl::PointXYZRGB>() );
         //boost::shared_ptr<pcl::PointCloud<pcl::PointXYZRGB>> cloud( new pcl::PointCloud<pcl::PointXYZRGB>() );
@@ -413,6 +439,8 @@ namespace pcl
 
     pcl::PointCloud<pcl::PointXYZRGBA>::Ptr pcl::Kinect2Grabber::convertRGBADepthToPointXYZRGBA( RGBQUAD* colorBuffer, UINT16* depthBuffer )
     {
+        //LOG("pcl::Kinect2Grabber::convertRGBADepthToPointXYZRGBA( RGBQUAD* colorBuffer, UINT16* depthBuffer )")
+
         pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud( new pcl::PointCloud<pcl::PointXYZRGBA>() );
 
         cloud->width = static_cast<uint32_t>( depthWidth );
@@ -460,19 +488,23 @@ namespace pcl
 
     ColorType* pcl::Kinect2Grabber::GetColorBufferData()
     {
+        LOG("pcl::Kinect2Grabber::GetColorBufferData()")
+
         return this->colorBuffer.data();
     }
 
     int pcl::Kinect2Grabber::GetColorWidth()
     {
+        LOG("pcl::Kinect2Grabber::GetColorWidth()")
+
         return this->colorWidth;
-    
     }
 
     int pcl::Kinect2Grabber::GetColorHeight()
     {
+        LOG("pcl::Kinect2Grabber::GetColorHeight()")
+
         return this->colorHeight;
-    
     }
 
 

@@ -4,7 +4,7 @@
 
 KinectV1::KinectV1() 
 {
-	std::clog << "KinectV1::KinectV1()" << std::endl;
+	LOG("KinectV1::KinectV1()")
     _kinectV1Grabber = std::make_shared<KinectV1Grabber>();
 }
 
@@ -24,7 +24,7 @@ KinectV1::Start()
 void
 KinectV1::Stop()
 {
-	std::clog << "KinectV1::Stop()" << std::endl;
+	LOG("KinectV1::Stop()")
 }
 
 //ColorPixels<ColorType>
@@ -42,7 +42,7 @@ KinectV1::Stop()
 Colors
 KinectV1::GetColorPixels()
 {
-	std::clog << "KinectV1::GetColorPixels()" << std::endl;
+	LOG("KinectV1::GetColorPixels()")
 
     try 
     {
@@ -55,7 +55,7 @@ KinectV1::GetColorPixels()
     }
     catch (...)
     {
-	    std::clog << "KinectV1::GetColorPixels() - catch" << std::endl;
+	    LOG( "KinectV1::GetColorPixels() - catch")
     }
 
     return Colors();
@@ -67,12 +67,12 @@ pcl::PointCloud<PointType>::ConstPtr
 KinectV1::GetPointCloud()
 {
     return _kinectV1Grabber->grabCloud();
-
 }
 
 void 
 KinectV1::RecordOneFrame(std::string filepath)
 {
+    LOG("KinectV1::RecordOneFrame(std::string filepath)")
     auto cloud = _kinectV1Grabber->grabCloud();
     pcl::io::savePCDFileASCII(filepath, *cloud);
 }

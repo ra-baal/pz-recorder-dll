@@ -43,13 +43,16 @@ RecordingManager::GetColorBitmaps()
 void
 RecordingManager::RecordingMode()
 {
+	// OpóŸnienie, aby kinecty na pewno by³y gotowe (kinect V2 omija³ pierwsz¹ chmurê).
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
 	std::chrono::milliseconds interval(1000);
 	_recording = true;
 	_frameNumber = 1;
 	
 	_recordingThread = std::thread([this, interval]()
 	{
-		//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+		LOG("RecordingManager::RecordingMode() - _recordingThread")
 
 		while(_recording)
 		{
@@ -57,18 +60,21 @@ RecordingManager::RecordingMode()
 			auto target = start + interval;
 
 			std::thread t1([this]() {
-				_recorder1->RecordOneFrame(std::to_string(_frameNumber) + "-1.pcd");
+				_recorder1->RecordOneFrame(std::to_string(_frameNumber) + "-kinectV1.pcd");
 			});
 
 			std::thread t2([this]() {
-				_recorder2->RecordOneFrame(std::to_string(_frameNumber) + "-2.pcd");
+				_recorder2->RecordOneFrame(std::to_string(_frameNumber) + "-kinectV2.pcd");
 			});
-
+			
 			t1.join();
 			t2.join();
 
 			_frameNumber++; // Musi byæ po joinach.
 
+			auto timeForFrame = target - std::chrono::high_resolution_clock::now();
+
+			LOG_IMPORTANT( "timeForFrame miliseconds: " << (timeForFrame.count() / 1000000) )
 			std::this_thread::sleep_until(target);
 		}
 

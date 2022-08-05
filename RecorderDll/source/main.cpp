@@ -11,7 +11,7 @@
 
 int main()
 {
-	std::clog << "main: start" << std::endl;
+	LOG("main: start")
 	
 	//kinect_v1_main();
 
@@ -29,7 +29,7 @@ int main()
 
 	recordingManager_classTest();
 
-	std::clog << "main: end" << std::endl;
+	LOG("main: end")
 	return 0;
 }
 

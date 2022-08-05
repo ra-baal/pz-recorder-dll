@@ -40,35 +40,35 @@ class Timer
 
 void recordingManager_classTest()
 {
-    std::cout << 0 << std::endl;
+    LOG("0")
 
     RecordingManager manager;
 
-    std::cout << 1 << std::endl;
+    LOG("1")
 
     //std::cout << "Colors* GetColorBitmaps: " << manager.GetColorBitmaps() << std::endl;
 
-    std::cout << 2 << std::endl;
+    LOG("2")
 
-    std::cout << "int GetRecordersNumber: " << manager.GetRecordersNumber() << std::endl;
+    LOG("int GetRecordersNumber: " << manager.GetRecordersNumber())
 
-    std::cout << 3 << std::endl;
+    LOG("3")
 
     manager.RecordingMode();
 
-    std::cout << 4 << std::endl;
+    LOG("4")
 
-    Timer timer(10);
+    Timer timer(20);
 
-    std::cout << 5 << std::endl;
+    LOG("5")
 
     timer.Wait();
 
-    std::cout << 6 << std::endl;
+    LOG("6")
 
     manager.PreviewMode();
-
-    std::cout << 7 << std::endl;
+    
+    LOG("7")
 
 }
 
