@@ -9,13 +9,13 @@ typedef RGBQUAD ColorType;
 
 // Nie miesza napisów z ró¿nych w¹tków.
 #define LOG(strText) //std::clog << ( std::stringstream() << std::this_thread::get_id() << ": " << strText << "\n" ).str() ;
-#define LOG_IMPORTANT(strText) std::clog << ( std::stringstream() << std::this_thread::get_id() << ": " << strText << "\n" ).str() ;
+#define LOG_IMPORTANT(strText) //std::clog << ( std::stringstream() << std::this_thread::get_id() << ": " << strText << "\n" ).str() ;
 
 struct Colors
 {
-	int Width;
-	int Height;
-	ColorType* Data;
+	int Width = 0;
+	int Height = 0;
+	ColorType* Data = nullptr;
 };
 
 class DeviceNotFoundException : public std::runtime_error

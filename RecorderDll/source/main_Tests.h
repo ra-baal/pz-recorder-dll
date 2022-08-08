@@ -46,27 +46,31 @@ void recordingManager_classTest()
 
     LOG("1")
 
-    //std::cout << "Colors* GetColorBitmaps: " << manager.GetColorBitmaps() << std::endl;
-
+    LOG("int GetRecordersNumber: " << manager.GetRecordersNumber())
+    
     LOG("2")
 
-    LOG("int GetRecordersNumber: " << manager.GetRecordersNumber())
+    manager.StartRecording();
 
     LOG("3")
 
-    manager.RecordingMode();
+    Timer timer(10);
 
     LOG("4")
 
-    Timer timer(20);
+    timer.Wait();
 
     LOG("5")
 
-    timer.Wait();
+    LOG_IMPORTANT( "Colors* GetColorBitmaps: " << manager.GetColorBitmaps() )
+    auto data0 = manager.GetColorBitmaps()[0].Data;
+    LOG_IMPORTANT( "(*manager.GetColorBitmaps()[0].Data).rgbRed: " << (data0 ? (int)(data0->rgbRed) : -1) )
+    auto data1 = manager.GetColorBitmaps()[1].Data;
+    LOG_IMPORTANT( "(*manager.GetColorBitmaps()[1].Data).rgbRed: " << (data1 ? (int)(data1->rgbRed) : -1) )
 
     LOG("6")
 
-    manager.PreviewMode();
+    manager.StopRecording();
     
     LOG("7")
 

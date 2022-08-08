@@ -9,6 +9,6 @@ class IRecordingManager
         //virtual RecorderState GetState() = 0;
         virtual int GetRecordersNumber() = 0;
         virtual Colors* GetColorBitmaps() = 0;
-        virtual void RecordingMode() = 0;
-        virtual void PreviewMode() = 0;
+        virtual void StartRecording() = 0;
+        virtual void StopRecording() = 0;
 };

@@ -24,6 +24,12 @@ KinectV1Grabber::KinectV1Grabber() :
 
 	_device->setSynchronization(true);
 
+
+	_setStreams();
+}
+
+void KinectV1Grabber::_setStreams()
+{
 	 pcl::io::openni2::OpenNI2Device::StreamCallbackFunction colorCallback = 
 	 [this](openni::VideoStream& stream)
 	 {
@@ -31,6 +37,8 @@ KinectV1Grabber::KinectV1Grabber() :
 	 };
 
 	_device->setColorCallback(colorCallback);
+
+	_device->startColorStream();
 }
 
 void KinectV1Grabber::cloud_cb_(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr& cloud)
@@ -57,6 +65,8 @@ pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr KinectV1Grabber::grabCloud()
 	{
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
+
+	LOG_IMPORTANT("_colorFrame.isValid: " << _colorFrame.isValid())
 
 	_interface->stop();
 

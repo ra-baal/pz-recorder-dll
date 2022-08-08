@@ -16,12 +16,15 @@ private:
 
 	openni::VideoFrameRef _colorFrame;
 
+	void _setStreams();
+
 
 public:
 	pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr cloudFromKinect;
 
 	KinectV1Grabber();
 	pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr grabCloud();
+	
 
 	ColorType* GetColorBufferData();
     int GetColorWidth();

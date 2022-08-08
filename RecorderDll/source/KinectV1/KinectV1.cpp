@@ -51,7 +51,9 @@ KinectV1::GetColorPixels()
             _kinectV1Grabber->GetColorHeight(),
             _kinectV1Grabber->GetColorBufferData()
         };
+
         return colors;
+
     }
     catch (...)
     {

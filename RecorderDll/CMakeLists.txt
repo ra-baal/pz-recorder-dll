@@ -41,9 +41,7 @@ add_executable(
 	./source/KinectV2/KinectV2.h
 	./source/KinectV2/KinectV2.cpp
 
-
-	./source/API/DllApi.h
-	./source/API/DllApi.cpp
+	# API biblioteki.
 	./source/API/RecordingManagerAPI.h
 	./source/API/RecordingManagerAPI.cpp
 )

@@ -14,8 +14,8 @@ public:
 	// virtual RecorderState GetState() override;
 	virtual int GetRecordersNumber() override;
     virtual Colors* GetColorBitmaps() override;
-	virtual void RecordingMode() override;
-	virtual void PreviewMode() override;
+	virtual void StartRecording() override;
+	virtual void StopRecording() override;
 
 protected:
 	std::shared_ptr<ICloudRecorder> _recorder1;
@@ -25,6 +25,5 @@ protected:
 
 	std::thread _recordingThread;
 	bool _recording;
-	int _frameNumber;
 
 };

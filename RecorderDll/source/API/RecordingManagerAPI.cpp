@@ -28,12 +28,12 @@ Colors* RecordingManager_GetColorBitmaps(void* recordingManager)
     return ((IRecordingManager*)recordingManager)->GetColorBitmaps();
 }
 
-void RecordingManager_RecordingMode(void* recordingManager)
+void RecordingManager_StartRecording(void* recordingManager)
 {
-    ((IRecordingManager*)recordingManager)->RecordingMode();
+    ((IRecordingManager*)recordingManager)->StartRecording();
 }
 
-void RecordingManager_PreviewMode(void* recordingManager)
+void RecordingManager_StopRecording(void* recordingManager)
 {
-    ((IRecordingManager*)recordingManager)->PreviewMode();
+    ((IRecordingManager*)recordingManager)->StopRecording();
 }
