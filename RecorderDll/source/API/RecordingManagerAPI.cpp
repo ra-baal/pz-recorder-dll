@@ -2,6 +2,11 @@
 #include "../IRecordingManager.h"
 #include "../RecordingManager.h"
 
+int RecordingManager_Version()
+{
+    return 220809; // 22-08-09
+}
+
 int RecordingManager_Test(int a, int b)
 {
     return a + b;

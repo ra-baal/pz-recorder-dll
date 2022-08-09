@@ -64,9 +64,11 @@ void recordingManager_classTest()
 
     LOG_IMPORTANT( "Colors* GetColorBitmaps: " << manager.GetColorBitmaps() )
     auto data0 = manager.GetColorBitmaps()[0].Data;
-    LOG_IMPORTANT( "(*manager.GetColorBitmaps()[0].Data).rgbRed: " << (data0 ? (int)(data0->rgbRed) : -1) )
+    LOG_IMPORTANT( "(*manager.GetColorBitmaps()[0].Data).rgbRed: " << (data0 ? ((RGBQUAD*)data0)->rgbRed : -1) )
+    LOG_IMPORTANT( "PixelFormat: " << manager.GetColorBitmaps()[0].Format )
     auto data1 = manager.GetColorBitmaps()[1].Data;
-    LOG_IMPORTANT( "(*manager.GetColorBitmaps()[1].Data).rgbRed: " << (data1 ? (int)(data1->rgbRed) : -1) )
+    LOG_IMPORTANT( "(*manager.GetColorBitmaps()[1].Data).rgbRed: " << (data1 ? ((RGBQUAD*)data1)->rgbRed : -1) )
+    LOG_IMPORTANT( "PixelFormat: " << manager.GetColorBitmaps()[1].Format )
 
     LOG("6")
 

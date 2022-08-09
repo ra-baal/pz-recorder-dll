@@ -31,22 +31,66 @@ namespace Recorder.Model
 
         private (byte b, byte g, byte r)[] colorsToBgrArray(Colors colors)
         {
-            (byte b, byte g, byte r)[] bitmap = new (byte r, byte g, byte b)[colors.Heigth * colors.Width];
-            RGBQUAD* rgbquadPtr = colors.Data;
-            for (int i = 0; i < colors.Width * colors.Heigth; i++)
+            switch (colors.Format)
             {
-                byte* bytePtr = (byte*)rgbquadPtr; // RGBQUAD.rgbBlue
-                bitmap[i].b = *bytePtr;
+                case PixelFormat.UnknownFormat:
+                    throw new ArgumentException("Nieznany format piksela");
+                case PixelFormat.RGB_888:
+                    return rgb888ColorsToBgrArray(colors);
+                case PixelFormat.BGR32:
+                    return bgr32ColorsToBgrArray(colors);
+                default:
+                    throw new ArgumentException("Nieobsługiwany format piksela");
+            }
+        }
 
-                bytePtr++; // RGBQUAD.rgbGreen
-                bitmap[i].g = *bytePtr;
+        private (byte b, byte g, byte r)[] bgr32ColorsToBgrArray(Colors colors)
+        {
+            (byte b, byte g, byte r)[] bitmap = new (byte r, byte g, byte b)[colors.Heigth * colors.Width];
+            RGBQUAD* rgbquadPtr = (RGBQUAD*)colors.Data; // rgbquad <=> bgr32
 
-                bytePtr++; // RGBQUAD.rgbRed
-                bitmap[i].r = *bytePtr;
+            if (rgbquadPtr != null)
+            {
+                for (int i = 0; i < colors.Width * colors.Heigth; i++)
+                {
+                    byte* bytePtr = (byte*)rgbquadPtr; // RGBQUAD.rgbBlue
+                    bitmap[i].b = *bytePtr;
 
-                bytePtr++; // RGBQUAD.rgbReserved
+                    bytePtr++; // RGBQUAD.rgbGreen
+                    bitmap[i].g = *bytePtr;
 
-                rgbquadPtr++; // Następne 4 bajty
+                    bytePtr++; // RGBQUAD.rgbRed
+                    bitmap[i].r = *bytePtr;
+
+                    bytePtr++; // RGBQUAD.rgbReserved
+
+                    rgbquadPtr++; // Następne 4 bajty
+                }
+            }
+
+            return bitmap;
+        }
+
+        private (byte b, byte g, byte r)[] rgb888ColorsToBgrArray(Colors colors)
+        {
+            (byte b, byte g, byte r)[] bitmap = new (byte r, byte g, byte b)[colors.Heigth * colors.Width];
+            (byte r, byte g, byte b)* rgb888 = ((byte, byte, byte)*) colors.Data;
+
+            if (rgb888 != null)
+            {
+                for (int i = 0; i < colors.Width * colors.Heigth; i++)
+                {
+                    byte* bytePtr = (byte*)rgb888; // RGBQUAD.rgbBlue
+                    bitmap[i].r = *bytePtr;
+
+                    bytePtr++; // RGBQUAD.rgbGreen
+                    bitmap[i].g = *bytePtr;
+
+                    bytePtr++; // RGBQUAD.rgbRed
+                    bitmap[i].b = *bytePtr;
+
+                    rgb888++; // Następne 3 bajty
+                }
             }
 
             return bitmap;

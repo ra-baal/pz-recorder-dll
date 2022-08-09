@@ -22,7 +22,7 @@ namespace Recorder.ModelTests
 
             IRecordingManager manager = new RecordingManager();
 
-            Thread.Sleep(5 * 1000); // Trzeba poczekać, żeby Kinect zaczął rejestrować. 
+            //Thread.Sleep(5 * 1000); // Trzeba poczekać, żeby Kinect zaczął rejestrować. 
 
             (byte b, byte g, byte r)[][]? bitmaps = manager.GetColorBitmaps();
             
@@ -38,15 +38,14 @@ namespace Recorder.ModelTests
             Console.WriteLine($"b:{color0.b} g:{color0.g} r:{color0.r}");
             Console.WriteLine($"b:{color1.b} g:{color1.g} r:{color1.r}");
 
+            Console.WriteLine();
         }
 
         public static void RecordingManager_LivePreview_Test()
         {
             IRecordingManager manager = new RecordingManager();
-            Thread.Sleep(1000); // ToDo: trzeba doprowadzić do postaci, w której nie będzie potrzeba tych pauz.
 
             manager.StartRecording();
-            Thread.Sleep(1000); // ToDo: trzeba doprowadzić do postaci, w której nie będzie potrzeba tych pauz.
 
             int i = 0;
 

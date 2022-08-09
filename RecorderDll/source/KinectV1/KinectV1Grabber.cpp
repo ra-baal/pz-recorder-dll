@@ -66,7 +66,13 @@ pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr KinectV1Grabber::grabCloud()
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
 
-	LOG_IMPORTANT("_colorFrame.isValid: " << _colorFrame.isValid())
+	//LOG_IMPORTANT("_colorFrame.isValid: " << _colorFrame.isValid())
+	//auto mode = _colorFrame.getVideoMode();
+	//auto format = mode.getPixelFormat();
+	//LOG_IMPORTANT(format);
+	//LOG_IMPORTANT(_colorFrame.getDataSize());
+	//LOG_IMPORTANT(_colorFrame.getHeight());
+	//LOG_IMPORTANT(_colorFrame.getWidth());
 
 	_interface->stop();
 

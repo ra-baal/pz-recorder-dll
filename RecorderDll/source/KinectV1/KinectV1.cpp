@@ -46,18 +46,22 @@ KinectV1::GetColorPixels()
 
     try 
     {
-        Colors colors = {
+        Colors colors
+        (
             _kinectV1Grabber->GetColorWidth(),
             _kinectV1Grabber->GetColorHeight(),
+            PixelFormat::RGB_888,
             _kinectV1Grabber->GetColorBufferData()
-        };
+        );
 
         return colors;
 
     }
     catch (...)
     {
-	    LOG( "KinectV1::GetColorPixels() - catch")
+        // ToDo: To raczej niczym nie rzuca.
+
+	    LOG("KinectV1::GetColorPixels() - catch")
     }
 
     return Colors();

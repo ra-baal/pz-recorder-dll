@@ -111,12 +111,13 @@ KinectV2::GetColorPixels()
 {
 	LOG("KinectV2::GetColorPixelsPtr()")
 
-    Colors colors =
-    {
+    Colors colors
+    (
         _kinect2grabber->GetColorWidth(),
         _kinect2grabber->GetColorHeight(),
+        PixelFormat::BGR32,
         _kinect2grabber->GetColorBufferData()
-    };
+    );
 
     return colors;
 }

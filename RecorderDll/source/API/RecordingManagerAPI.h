@@ -8,6 +8,7 @@
 
 #include "../additionals.h"
 
+extern "C" RecorderDll_API int RecordingManager_Version();
 extern "C" RecorderDll_API int RecordingManager_Test(int a, int b);
 extern "C" RecorderDll_API void* RecordingManager_New();
 extern "C" RecorderDll_API void RecordingManager_Delete(void* recordingManager);
