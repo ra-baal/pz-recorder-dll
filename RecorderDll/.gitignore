@@ -12,3 +12,4 @@ CMakeCache.txt
 # Inne niechciane pliki
 out/
 
+*.vrfilm
