@@ -161,7 +161,7 @@ KinectV2::PrepareCloud(const pcl::PointCloud<PointType>::ConstPtr& cloud)
 
     pcl::VoxelGrid<pcl::PointXYZRGBA> vg;
     vg.setInputCloud(cloud);
-    vg.setLeafSize(0.01f, 0.01f, 0.01f);
+    vg.setLeafSize(0.02f, 0.02f, 0.02f);
     vg.filter(*cloud_ptr);
 
     return cloud_ptr;
