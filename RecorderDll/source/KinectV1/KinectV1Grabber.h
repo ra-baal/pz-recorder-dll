@@ -26,7 +26,7 @@ public:
 	pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr grabCloud();
 	
 
-	ColorType* GetColorBufferData();
+	Rgb24* GetColorBufferData();
     int GetColorWidth();
     int GetColorHeight();
 

@@ -2,7 +2,7 @@
 
 #include <pcl/filters/voxel_grid.h>
 
-#include "kinect_v2.h"
+#include "KinectV2Grabber.h"
 #include <pcl/io/pcd_io.h>
 #include "../additionals.h"
 
@@ -41,7 +41,7 @@ KinectV2::Start()
 	std::function<void( const pcl::PointCloud<PointType>::ConstPtr& )> callbackFunction =
         [this]( const pcl::PointCloud<PointType>::ConstPtr& ptr )
         {
-            LOG("KinectV2::Start() - callbackFunction")
+            //LOG("KinectV2::Start() - callbackFunction")
             
             // Sekcja krytyczna. //
             // Jeœli dobrze rozumiem, to tutaj bezwzglêdnie zawsze zak³adamy blokadê,
@@ -69,8 +69,6 @@ KinectV2::Start()
     }
     catch (pcl::IOException& e)
     {
-        LOG("KinectV2::Start() - catch (pcl::IOException& e)")
-
         LOG("_kinect2grabber->registerCallback unsuccessful :(")
         LOG("what: " << e.what())
     }
@@ -78,10 +76,6 @@ KinectV2::Start()
     {
         LOG("KinectV2::Start() - catch(...)")
     }
-
-	// Na razie metoda start jest uruchamiana w konstruktorze.
-	// _kinect2grabber->start();
-
 
 }
 
@@ -91,34 +85,19 @@ KinectV2::Stop()
 	LOG("KinectV2::Stop()")
 
     _kinect2grabber->stop();
-    
-    //if (_connection.connected())
-    //    _connection.disconnect();
 
 }
-
-//ColorPixels<ColorType>
-//KinectV2::GetColorPixels()
-//{
-//	std::clog << "KinectV2::GetColorPixels()" << std::endl;
-//
-//    // ToDo: Ta kopia jest raczej niepotrzebna.
-//    // To i tak ma byæ tylko do odczytu na bie¿¹co.
-//    // I tak tylko na podgl¹d ma iœæ.
-//    return ColorPixels<ColorType>(_kinect2grabber->GetColorWidth(), _kinect2grabber->GetColorHeight(), _kinect2grabber->GetColorBufferData());
-//   
-//}
 
 Colors
 KinectV2::GetColorPixels()
 {
-	LOG("KinectV2::GetColorPixelsPtr()")
+	//LOG("KinectV2::GetColorPixelsPtr()")
 
     Colors colors
     (
         _kinect2grabber->GetColorWidth(),
         _kinect2grabber->GetColorHeight(),
-        PixelFormat::BGR32,
+        ColorFormat::BGR32,
         _kinect2grabber->GetColorBufferData()
     );
 
@@ -170,23 +149,11 @@ KinectV2::PrepareCloud(const pcl::PointCloud<PointType>::ConstPtr& cloud)
 void 
 KinectV2::RecordOneFrame(std::string filepath)
 {
-   /* boost::mutex::scoped_try_lock lock(_mutex);
-    if (lock.owns_lock())
-    {
-        auto cloud = _pointCloud;
-        pcl::io::savePCDFileASCII(filepath, *cloud);
-    }
-    else
-    {
-    
-    }*/
-
-    //Start();
-    
+    // Czy nie nale¿a³oby zrobiæ tutaj jakiejœ blokady, mutexa ?
     auto cloud = _pointCloud;
     if( cloud != nullptr )
     {
-        LOG("KinectV2::RecordOneFrame(std::string filepath) - cloud is good")
+        //LOG("KinectV2::RecordOneFrame(std::string filepath) - cloud is ok")
         auto cloud_ptr = PrepareCloud(cloud);
         pcl::io::savePCDFileASCII(filepath, *cloud_ptr);
     }
@@ -194,7 +161,5 @@ KinectV2::RecordOneFrame(std::string filepath)
     {
         LOG("KinectV2::RecordOneFrame(std::string filepath) - cloud is nullptr")
     }
-
-    //Stop();
 
 }

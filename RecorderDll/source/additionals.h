@@ -5,13 +5,14 @@
 
 typedef unsigned char byte;
 typedef pcl::PointXYZRGBA PointType;
-typedef RGBQUAD ColorType;
 
 // Nie miesza napisów z ró¿nych w¹tków.
-#define LOG(strText) //std::clog << ( std::stringstream() << std::this_thread::get_id() << ": " << strText << "\n" ).str() ;
-#define LOG_IMPORTANT(strText) std::clog << ( std::stringstream() << std::this_thread::get_id() << ": " << strText << "\n" ).str() ;
+#define LOG(strText) std::clog << ( std::stringstream() << std::this_thread::get_id() << ": " << strText << "\n" ).str() ;
 
-enum PixelFormat
+struct Rgb24 { byte r = 255; byte g = 255; byte b = 255; };
+struct Bgr32 { byte b = 255; byte g = 255; byte r = 255; byte _reserved = 0; }; // To¿same z RGBQUAD z Windows.h -> wingdi.h
+
+enum ColorFormat
 {
 	UnknownFormat = 0,
 	RGB_888 = 200, // (red, green, blue) ; 3*8 bitów = 24 bity = 3 bajty
@@ -24,11 +25,11 @@ struct Colors
 	{
 		Width = 0;
 		Height = 0;
-		Format = PixelFormat::UnknownFormat;
+		Format = ColorFormat::UnknownFormat;
 		Data = nullptr;
 	}
 
-	Colors(int width, int height, PixelFormat format, void* data)
+	Colors(int width, int height, ColorFormat format, void* data)
 	{
 		Width = width;
 		Height = height;
@@ -38,7 +39,7 @@ struct Colors
 
 	int Width;
 	int Height;
-	PixelFormat Format;
+	ColorFormat Format;
 	void* Data;
 };
 
@@ -49,59 +50,3 @@ public:
 	: std::runtime_error(message.c_str()) {}
 
 };
-
-
-/// <summary>
-/// Wszystko publiczne!
-/// Ta struktura to przerost formy nad potrzebami.
-/// Raczej do wyrzucenia.
-/// </summary>
-template<typename DataType>
-struct ColorPixels
-{
-	public:
-		int _width;
-		int _height;
-		DataType* _data;
-
-		ColorPixels()
-		: _width(0), _height(0), _data(nullptr)
-		{
-			std::clog << "ColorPixels()" << std::endl;
-
-		}
-
-		ColorPixels(const ColorPixels<ColorPixels>& other) = delete;
-		
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="bytes">Zostanie wykonana kopia.</param>
-		ColorPixels(int width, int height, DataType* src)
-		: _width(width), _height(height)
-		{
-			std::clog << "ColorPixels(int width, int height, DataType* src)" << std::endl;
-
-			int length = _width*_height;
-			_data = new DataType[length];
-
-			memcpy(_data, src, length);
-		}
-
-		~ColorPixels()
-		{
-			std::clog << "~ColorPixels()" << std::endl;
-			if (_data)
-				delete[] _data;
-		}
-
-
-		// todo
-		// Usun¹æ albo poprawnie zaimplemntwoaæ operato przypisan
-		// ale jeœli i tak bêdzie wskaŸnik wtedy mo¿e byæ nie wa¿ne to.
-
-};
-
-
-

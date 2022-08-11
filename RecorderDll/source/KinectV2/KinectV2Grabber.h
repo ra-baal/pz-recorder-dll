@@ -1,12 +1,5 @@
 /// Kod z https://github.com/UnaNancyOwen/KinectGrabber/tree/Kinect2Grabber
-/// z niewielkimi modyfikacjami.
-/// 
-/// RB: Podsumowanie dokonanych zmian w tym pliku:
-/// 1. boost::thread --> std::thread
-///     - By³ problem z konstruktorem bezargumentowym?
-/// 2. boost::shared_ptr --> std::shared_ptr
-/// 
-/// To chyba jedyne zmiany.
+/// z modyfikacjami.
 
 // Kinect2Grabber is pcl::Grabber to retrieve the point cloud data from Kinect v2 using Kinect for Windows SDK 2.x.
 // This source code is licensed under the MIT license. Please see the License in License.txt.
@@ -47,7 +40,7 @@ namespace pcl
             typedef void ( signal_Kinect2_PointXYZRGBA )( const std::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGBA>>& );
 
             // RB: Dodane:
-            ColorType* GetColorBufferData();
+            RGBQUAD* GetColorBufferData();
             int GetColorWidth();
             int GetColorHeight();
 

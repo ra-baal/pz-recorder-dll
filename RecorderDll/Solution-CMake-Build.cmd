@@ -1,0 +1,2 @@
+cmake -S . -B .
+pause

@@ -1,4 +1,4 @@
-#include "kinect2_grabber.h"
+#include "KinectV2Grabber.h"
 
 /// <summary>
 /// Zwalnia obiekty klas implementuj¹cych interfejsy,
@@ -318,7 +318,7 @@ namespace pcl
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr pcl::Kinect2Grabber::convertDepthToPointXYZ( UINT16* depthBuffer )
     {
-        LOG("pcl::Kinect2Grabber::convertDepthToPointXYZ( UINT16* depthBuffer )")
+        //LOG("pcl::Kinect2Grabber::convertDepthToPointXYZ( UINT16* depthBuffer )")
 
         pcl::PointCloud<pcl::PointXYZ>::Ptr cloud( new pcl::PointCloud<pcl::PointXYZ>() );
 
@@ -352,7 +352,7 @@ namespace pcl
 
     pcl::PointCloud<pcl::PointXYZI>::Ptr pcl::Kinect2Grabber::convertInfraredDepthToPointXYZI( UINT16* infraredBuffer, UINT16* depthBuffer )
     {
-        LOG("pcl::Kinect2Grabber::convertInfraredDepthToPointXYZI( UINT16* infraredBuffer, UINT16* depthBuffer )")
+        //LOG("pcl::Kinect2Grabber::convertInfraredDepthToPointXYZI( UINT16* infraredBuffer, UINT16* depthBuffer )")
 
         pcl::PointCloud<pcl::PointXYZI>::Ptr cloud( new pcl::PointCloud<pcl::PointXYZI>() );
 
@@ -486,23 +486,23 @@ namespace pcl
         return cloud;
     }
 
-    ColorType* pcl::Kinect2Grabber::GetColorBufferData()
+    RGBQUAD* pcl::Kinect2Grabber::GetColorBufferData()
     {
-        LOG("pcl::Kinect2Grabber::GetColorBufferData()")
+        //LOG("pcl::Kinect2Grabber::GetColorBufferData()")
 
         return this->colorBuffer.data();
     }
 
     int pcl::Kinect2Grabber::GetColorWidth()
     {
-        LOG("pcl::Kinect2Grabber::GetColorWidth()")
+        //LOG("pcl::Kinect2Grabber::GetColorWidth()")
 
         return this->colorWidth;
     }
 
     int pcl::Kinect2Grabber::GetColorHeight()
     {
-        LOG("pcl::Kinect2Grabber::GetColorHeight()")
+        //LOG("pcl::Kinect2Grabber::GetColorHeight()")
 
         return this->colorHeight;
     }

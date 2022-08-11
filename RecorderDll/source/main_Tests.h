@@ -3,14 +3,12 @@
 #include <pcl/visualization/pcl_visualizer.h>
 #include "ICloudRecorder.h"
 #include "KinectV2/KinectV2.h"
-#include "KinectV1/kinect_v1.h"
-#include "KinectV2/kinect_v2.h"
 #include "KinectV1/KinectV1.h"
 
 #include <pcl/io/pcd_io.h> // For pcl::io::savepcdfileascii
 #include <thread>
 
-#include "RecordingManager.h"
+#include "RecordingManager/RecordingManager.h"
 
 class Timer
 {
@@ -62,13 +60,13 @@ void recordingManager_classTest()
 
     LOG("5")
 
-    LOG_IMPORTANT( "Colors* GetColorBitmaps: " << manager.GetColorBitmaps() )
+    LOG( "Colors* GetColorBitmaps: " << manager.GetColorBitmaps() )
     auto data0 = manager.GetColorBitmaps()[0].Data;
-    LOG_IMPORTANT( "(*manager.GetColorBitmaps()[0].Data).rgbRed: " << (data0 ? ((RGBQUAD*)data0)->rgbRed : -1) )
-    LOG_IMPORTANT( "PixelFormat: " << manager.GetColorBitmaps()[0].Format )
+    LOG( "(*manager.GetColorBitmaps()[0].Data).rgbRed: " << (data0 ? ((Rgb24*)data0)->r : -1) )
+    LOG( "ColorFormat: " << manager.GetColorBitmaps()[0].Format )
     auto data1 = manager.GetColorBitmaps()[1].Data;
-    LOG_IMPORTANT( "(*manager.GetColorBitmaps()[1].Data).rgbRed: " << (data1 ? ((RGBQUAD*)data1)->rgbRed : -1) )
-    LOG_IMPORTANT( "PixelFormat: " << manager.GetColorBitmaps()[1].Format )
+    LOG( "(*manager.GetColorBitmaps()[1].Data).rgbRed: " << (data1 ? ((Bgr32*)data1)->r : -1) )
+    LOG( "ColorFormat: " << manager.GetColorBitmaps()[1].Format )
 
     LOG("6")
 
@@ -84,15 +82,6 @@ void kinectV1_classTest()
 
     auto cloud = kinectV1->GetPointCloud();
 
-}
-
-void kinect_threads()
-{
-    std::thread thread_V1(kinect_v1_main);
-    std::thread thread_V2(kinect_v2_main_UnaNancyOwen);
-  
-    thread_V1.join();
-    thread_V2.join();
 }
 
 void kinectV2_save_files(int duration_seconds)

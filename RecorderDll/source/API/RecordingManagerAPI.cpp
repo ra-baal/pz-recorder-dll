@@ -1,10 +1,12 @@
 #include "RecordingManagerAPI.h"
-#include "../IRecordingManager.h"
-#include "../RecordingManager.h"
+#include "../RecordingManager/IRecordingManager.h"
+#include "../RecordingManager/RecordingManager.h"
+
+#define DLL_VERSION 220811 // 22-08-11
 
 int RecordingManager_Version()
 {
-    return 220809; // 22-08-09
+    return DLL_VERSION;
 }
 
 int RecordingManager_Test(int a, int b)
@@ -41,4 +43,9 @@ void RecordingManager_StartRecording(void* recordingManager)
 void RecordingManager_StopRecording(void* recordingManager)
 {
     ((IRecordingManager*)recordingManager)->StopRecording();
+}
+
+void RecordingManager_SetDirectory(void* recordingManager, const char* str)
+{
+    ((IRecordingManager*)recordingManager)->SetDirectory(str);
 }

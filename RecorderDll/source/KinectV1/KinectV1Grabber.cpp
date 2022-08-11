@@ -1,17 +1,6 @@
 #include "KinectV1Grabber.h"
 #include "../additionals.h"
 
-//class NewColorFrameListener : openni::VideoStream::NewFrameListener
-//{
-//	// Inherited via NewFrameListener
-//	virtual void onNewFrame(openni::VideoStream& viedoStream) override 
-//	{
-//		
-//	}
-//
-//};
-
-
 KinectV1Grabber::KinectV1Grabber() :
 	_interface(new pcl::io::OpenNI2Grabber()),
 	_viewerWasStopped(false)
@@ -66,33 +55,33 @@ pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr KinectV1Grabber::grabCloud()
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
 
-	//LOG_IMPORTANT("_colorFrame.isValid: " << _colorFrame.isValid())
+	//LOG("_colorFrame.isValid: " << _colorFrame.isValid())
 	//auto mode = _colorFrame.getVideoMode();
 	//auto format = mode.getPixelFormat();
-	//LOG_IMPORTANT(format);
-	//LOG_IMPORTANT(_colorFrame.getDataSize());
-	//LOG_IMPORTANT(_colorFrame.getHeight());
-	//LOG_IMPORTANT(_colorFrame.getWidth());
+	//LOG(format);
+	//LOG(_colorFrame.getDataSize());
+	//LOG(_colorFrame.getHeight());
+	//LOG(_colorFrame.getWidth());
 
 	_interface->stop();
 
 	return cloudFromKinect;
 }
 
-ColorType* KinectV1Grabber::GetColorBufferData()
+Rgb24* KinectV1Grabber::GetColorBufferData()
 {
-	std::clog << "KinectV1Grabber::GetColorBufferData()" << std::endl;
-    return (ColorType*)_colorFrame.getData();
+	//std::clog << "KinectV1Grabber::GetColorBufferData()" << std::endl;
+    return (Rgb24*)_colorFrame.getData();
 }
 
 int KinectV1Grabber::GetColorWidth()
 {
-	std::clog << "KinectV1Grabber::GetColorWidth()" << std::endl;
+	//std::clog << "KinectV1Grabber::GetColorWidth()" << std::endl;
     return _colorFrame.getWidth();
 }
 
 int KinectV1Grabber::GetColorHeight()
 {
-	std::clog << "KinectV1Grabber::GetColorHeight()" << std::endl;
+	//std::clog << "KinectV1Grabber::GetColorHeight()" << std::endl;
     return _colorFrame.getHeight();
 }

@@ -11,39 +11,36 @@ set( CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}" ${CMAKE_MODULE_PATH} )
 project( RecorderDll )
 
 # Tutaj dodawać wszystkie pliki.
+# Jest to konieczne, aby poprawnie budowała się solucja za pomocą cmake.
 add_executable(
 	RecorderDll
 	./source/main.cpp
 	./source/ICloudRecorder.h
-	./source/IRecordingManager.h
 	./source/RecorderState.h
-	./source/RecordingManager.h
-	./source/RecordingManager.cpp
 	./source/additionals.h
 	./source/main_Tests.h
+
+	# RecordingManager
+	./source/RecordingManager/IRecordingManager.h
+	./source/RecordingManager/RecordingManager.h
+	./source/RecordingManager/RecordingManager.cpp
 	
-
-	./source/KinectV1/PluginPCL.h
-	./source/KinectV1/PluginPCL.cpp
-	./source/KinectV1/kinect_v1.h
-
+	# KinectV1
 	./source/KinectV1/KinectV1Grabber.h
 	./source/KinectV1/KinectV1Grabber.cpp
 	./source/KinectV1/KinectV1.h
 	./source/KinectV1/KinectV1.cpp
 
-
-	./source/KinectV2/kinect_v2.h
-	./source/KinectV2/kinect_v2.cpp
-
-	./source/KinectV2/kinect2_grabber.h
-	./source/KinectV2/kinect2_grabber.cpp
+	# KinectV2
+	./source/KinectV2/KinectV2Grabber.h
+	./source/KinectV2/KinectV2Grabber.cpp
 	./source/KinectV2/KinectV2.h
 	./source/KinectV2/KinectV2.cpp
 
-	# API biblioteki.
+	# API
 	./source/API/RecordingManagerAPI.h
 	./source/API/RecordingManagerAPI.cpp
+
 )
 
 

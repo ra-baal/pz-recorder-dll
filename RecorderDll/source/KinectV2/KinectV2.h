@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../ICloudRecorder.h" // For ICloudRecorder
-#include "kinect2_grabber.h" // For pcl::Kinect2Grabber
+#include "KinectV2Grabber.h" // For pcl::Kinect2Grabber
 
 
 class KinectV2 : public ICloudRecorder

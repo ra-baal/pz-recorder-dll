@@ -6,6 +6,7 @@ namespace Recorder.Model
     {
         #region DllImport.
         private const string _dll = "RecorderDll.dll";
+        [DllImport(_dll)] public static extern int RecordingManager_Version();
         [DllImport(_dll)] public static extern int RecordingManager_Test(int a, int b);
         [DllImport(_dll)] private static extern void* RecordingManager_New();
         [DllImport(_dll)] private static extern void RecordingManager_Delete(void* recordingManager);
@@ -13,6 +14,7 @@ namespace Recorder.Model
         [DllImport(_dll)] private static extern Colors* RecordingManager_GetColorBitmaps(void* recordingManager);
         [DllImport(_dll)] private static extern void RecordingManager_StartRecording(void* recordingManager);
         [DllImport(_dll)] private static extern void RecordingManager_StopRecording(void* recordingManager);
+        [DllImport(_dll)] private static extern void RecordingManager_SetDirectory(void* recordingManager, string str);
         #endregion
 
         #region Handlers.
@@ -33,11 +35,11 @@ namespace Recorder.Model
         {
             switch (colors.Format)
             {
-                case PixelFormat.UnknownFormat:
+                case ColorFormat.UnknownFormat:
                     throw new ArgumentException("Nieznany format piksela");
-                case PixelFormat.RGB_888:
+                case ColorFormat.Rgb24:
                     return rgb888ColorsToBgrArray(colors);
-                case PixelFormat.BGR32:
+                case ColorFormat.Bgr32:
                     return bgr32ColorsToBgrArray(colors);
                 default:
                     throw new ArgumentException("Nieobsługiwany format piksela");
@@ -47,7 +49,7 @@ namespace Recorder.Model
         private (byte b, byte g, byte r)[] bgr32ColorsToBgrArray(Colors colors)
         {
             (byte b, byte g, byte r)[] bitmap = new (byte r, byte g, byte b)[colors.Heigth * colors.Width];
-            RGBQUAD* rgbquadPtr = (RGBQUAD*)colors.Data; // rgbquad <=> bgr32
+            Bgr32* rgbquadPtr = (Bgr32*)colors.Data; // rgbquad <=> bgr32
 
             if (rgbquadPtr != null)
             {
@@ -74,7 +76,7 @@ namespace Recorder.Model
         private (byte b, byte g, byte r)[] rgb888ColorsToBgrArray(Colors colors)
         {
             (byte b, byte g, byte r)[] bitmap = new (byte r, byte g, byte b)[colors.Heigth * colors.Width];
-            (byte r, byte g, byte b)* rgb888 = ((byte, byte, byte)*) colors.Data;
+            Rgb24* rgb888 = (Rgb24*) colors.Data;
 
             if (rgb888 != null)
             {
@@ -116,6 +118,11 @@ namespace Recorder.Model
         public void StartRecording() => RecordingManager_StartRecording(_objptr);
 
         public void StopRecording() => RecordingManager_StopRecording(_objptr);
+
+        public void SetDirectory(string directory)
+        {
+            RecordingManager_SetDirectory(_objptr, directory);
+        }
 
         #endregion
 

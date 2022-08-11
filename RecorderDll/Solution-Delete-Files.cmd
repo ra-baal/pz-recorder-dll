@@ -9,3 +9,5 @@ del RecorderDll.vcxproj.user
 del ZERO_CHECK.vcxproj
 del ZERO_CHECK.vcxproj.filters
 del ZERO_CHECK.vcxproj.user
+
+pause

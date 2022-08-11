@@ -31,22 +31,10 @@ KinectV1::Stop()
 	LOG("KinectV1::Stop()")
 }
 
-//ColorPixels<ColorType>
-//KinectV1::GetColorPixels()
-//{
-//	std::clog << "KinectV1::GetColorPixels()" << std::endl;
-//
-//    // ToDo: Ta kopia jest raczej nie potrzebna.
-//    // To i tak ma byæ tylko do odczytu na bie¿¹co.
-//    // I tak tylko na podgl¹d ma iœæ.
-//    return ColorPixels<ColorType>(_kinect2grabber->GetColorWidth(), _kinect2grabber->GetColorHeight(), _kinect2grabber->GetColorBufferData());
-//   
-//}
-
 Colors
 KinectV1::GetColorPixels()
 {
-	LOG("KinectV1::GetColorPixels()")
+	//LOG("KinectV1::GetColorPixels()")
 
     try 
     {
@@ -54,7 +42,7 @@ KinectV1::GetColorPixels()
         (
             _kinectV1Grabber->GetColorWidth(),
             _kinectV1Grabber->GetColorHeight(),
-            PixelFormat::RGB_888,
+            ColorFormat::RGB_888,
             _kinectV1Grabber->GetColorBufferData()
         );
 
@@ -86,9 +74,12 @@ KinectV1::PrepareCloud(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr& cloud
 
     *cloud_ptr = *cloud;
 
+
+    // flip
     Eigen::Affine3f transform_2 = Eigen::Affine3f::Identity();
     transform_2.rotate(Eigen::AngleAxisf(22 / 7.0, Eigen::Vector3f::UnitZ()));
     transformPointCloud(*cloud_ptr, *cloud_ptr, transform_2);
+
 
     pcl::VoxelGrid<pcl::PointXYZRGBA> vg;
     vg.setInputCloud(cloud);
@@ -101,7 +92,7 @@ KinectV1::PrepareCloud(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr& cloud
 void 
 KinectV1::RecordOneFrame(std::string filepath)
 {
-    LOG("KinectV1::RecordOneFrame(std::string filepath)")
+    //LOG("KinectV1::RecordOneFrame(std::string filepath)")
     auto cloud = _kinectV1Grabber->grabCloud();
     auto cloud_ptr = PrepareCloud(cloud);
     pcl::io::savePCDFileASCII(filepath, *cloud_ptr);

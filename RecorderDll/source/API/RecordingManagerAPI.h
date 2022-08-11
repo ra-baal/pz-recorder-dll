@@ -16,3 +16,6 @@ extern "C" RecorderDll_API int RecordingManager_GetRecordersNumber(void* recordi
 extern "C" RecorderDll_API Colors* RecordingManager_GetColorBitmaps(void* recordingManager);
 extern "C" RecorderDll_API void RecordingManager_StartRecording(void* recordingManager);
 extern "C" RecorderDll_API void RecordingManager_StopRecording(void* recordingManager);
+extern "C" RecorderDll_API void RecordingManager_SetDirectory(void* recordingManager, const char* str);
+
+

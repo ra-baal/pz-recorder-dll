@@ -2,22 +2,36 @@
 
 namespace Recorder.Model
 {
-    // Typ identyczny jak w Windows.h -> wingdi.h
-    // Tożsame z BGR32.
-    public struct RGBQUAD
+    #region Typy identyczne z tymi w RecorderDll -> additionals.h.
+
+    public struct Rgb24 
     {
-        public byte rgbBlue;
-        public byte rgbGreen;
-        public byte rgbRed;
-        public byte rgbReserved;
+        public byte r = 255;
+        public byte g = 255;
+        public byte b = 255;
+
+        public Rgb24()
+        {
+        }
     }
 
-    // Identycznie jak w RecorderDll -> additionals.h
-    public enum PixelFormat
+    public struct Bgr32 
+    {
+        public byte b = 255;
+        public byte g = 255;
+        public byte r = 255;
+        public byte _reserved = 0;
+
+        public Bgr32()
+        {
+        }
+    }
+
+    public enum ColorFormat
     {
         UnknownFormat = 0,
-        RGB_888 = 200, // (red, green, blue) ; 3*8 bitów = 24 bity = 3 bajty
-        BGR32 = 400 // RGBQUAD ; (blue, green, red, nieużywane) ; 4*8 bitów = 32 bity = 4 bajty (z czego tylko 3 wykorzystane)
+        Rgb24 = 200, // (red, green, blue) ; 3*8 bitów = 24 bity = 3 bajty
+        Bgr32 = 400 // RGBQUAD ; (blue, green, red, nieużywane) ; 4*8 bitów = 32 bity = 4 bajty (z czego tylko 3 wykorzystane)
     };
 
     // Typ identyczny jak w RecorderDll -> additionals.h
@@ -25,7 +39,9 @@ namespace Recorder.Model
     {
         public int Width;
         public int Heigth;
-        public PixelFormat Format;
+        public ColorFormat Format;
         public void* Data;
     }
+
+    #endregion
 }

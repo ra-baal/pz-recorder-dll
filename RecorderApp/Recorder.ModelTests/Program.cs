@@ -9,11 +9,17 @@ namespace Recorder.ModelTests
 
         public static int Main()
         {
+            Console.WriteLine($"Wersja dll: {RecordingManager.RecordingManager_Version()}");
+            Console.WriteLine();
+
+
             //RecordingManager_Test();
-            RecordingManager_LivePreview_Test();
+            //RecordingManager_LivePreview_Test();
+            RecorderManager_SetDirectory_Test();
 
             return 0;
         }
+
 
         public static void RecordingManager_Test()
         {
@@ -72,6 +78,19 @@ namespace Recorder.ModelTests
 
 
         }
+
+        private static void RecorderManager_SetDirectory_Test()
+        {
+            IRecordingManager manager = new RecordingManager();
+
+            manager.SetDirectory("testowy");
+
+            manager.StartRecording();
+            manager.StopRecording();
+
+            // OK. Zapisuje teraz w katalogu o takiej nazwie.
+        }
+
 
 
     }
