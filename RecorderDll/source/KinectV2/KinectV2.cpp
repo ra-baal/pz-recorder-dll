@@ -1,4 +1,7 @@
 #include "KinectV2.h"
+
+#include <pcl/filters/voxel_grid.h>
+
 #include "kinect_v2.h"
 #include <pcl/io/pcd_io.h>
 #include "../additionals.h"
@@ -149,6 +152,21 @@ KinectV2::GetPointCloud()
 
 }
 
+pcl::PointCloud<PointType>::Ptr
+KinectV2::PrepareCloud(const pcl::PointCloud<PointType>::ConstPtr& cloud)
+{
+    pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud_ptr(new pcl::PointCloud<pcl::PointXYZRGBA>);
+
+    *cloud_ptr = *cloud;
+
+    pcl::VoxelGrid<pcl::PointXYZRGBA> vg;
+    vg.setInputCloud(cloud);
+    vg.setLeafSize(0.01f, 0.01f, 0.01f);
+    vg.filter(*cloud_ptr);
+
+    return cloud_ptr;
+}
+
 void 
 KinectV2::RecordOneFrame(std::string filepath)
 {
@@ -169,8 +187,8 @@ KinectV2::RecordOneFrame(std::string filepath)
     if( cloud != nullptr )
     {
         LOG("KinectV2::RecordOneFrame(std::string filepath) - cloud is good")
-	   
-        pcl::io::savePCDFileASCII(filepath, *cloud);
+        auto cloud_ptr = PrepareCloud(cloud);
+        pcl::io::savePCDFileASCII(filepath, *cloud_ptr);
     }
     else
     {

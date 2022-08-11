@@ -1,6 +1,10 @@
 #include "KinectV1.h"
+
+#include <pcl/filters/voxel_grid.h>
+
 #include "../additionals.h"
 #include <pcl/io/pcd_io.h>
+#include <pcl/common/transforms.h>
 
 KinectV1::KinectV1() 
 {
@@ -75,10 +79,30 @@ KinectV1::GetPointCloud()
     return _kinectV1Grabber->grabCloud();
 }
 
+pcl::PointCloud<PointType>::Ptr
+KinectV1::PrepareCloud(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr& cloud)
+{
+    pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud_ptr(new pcl::PointCloud<pcl::PointXYZRGBA>);
+
+    *cloud_ptr = *cloud;
+
+    Eigen::Affine3f transform_2 = Eigen::Affine3f::Identity();
+    transform_2.rotate(Eigen::AngleAxisf(22 / 7.0, Eigen::Vector3f::UnitZ()));
+    transformPointCloud(*cloud_ptr, *cloud_ptr, transform_2);
+
+    pcl::VoxelGrid<pcl::PointXYZRGBA> vg;
+    vg.setInputCloud(cloud);
+    vg.setLeafSize(0.01f, 0.01f, 0.01f);
+    vg.filter(*cloud_ptr);
+
+    return cloud_ptr;
+}
+
 void 
 KinectV1::RecordOneFrame(std::string filepath)
 {
     LOG("KinectV1::RecordOneFrame(std::string filepath)")
     auto cloud = _kinectV1Grabber->grabCloud();
-    pcl::io::savePCDFileASCII(filepath, *cloud);
+    auto cloud_ptr = PrepareCloud(cloud);
+    pcl::io::savePCDFileASCII(filepath, *cloud_ptr);
 }

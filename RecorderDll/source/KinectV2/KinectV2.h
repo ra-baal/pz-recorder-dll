@@ -15,6 +15,7 @@ public:
 	virtual void Stop() override;
 	virtual Colors GetColorPixels() override;
 	//Colors GetColorPixelsPtr();
+	virtual pcl::PointCloud<PointType>::Ptr PrepareCloud(const pcl::PointCloud<PointType>::ConstPtr&) override;
 	virtual pcl::PointCloud<PointType>::ConstPtr GetPointCloud() override;
 	virtual void RecordOneFrame(std::string filepath) override;
 
