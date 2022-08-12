@@ -19,6 +19,7 @@ public:
 	virtual void SetDirectory(const char* str) override;
 
 protected:
+	void findRecorders();
 	void RecordingManager::saveSettingsVrfilmFile(std::string directory, std::string settingsVrfilmFilename, int intervalSeconds, std::vector<std::string> pcdFilenames);
 
 	std::shared_ptr<ICloudRecorder> _recorder1;

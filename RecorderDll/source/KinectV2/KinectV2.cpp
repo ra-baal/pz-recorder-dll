@@ -10,15 +10,28 @@
 KinectV2::KinectV2() 
 {
 	LOG("KinectV2::KinectV2()")
-	_kinect2grabber = std::make_shared<pcl::Kinect2Grabber>();
+
+    try {
+	    _kinect2grabber = std::make_shared<pcl::Kinect2Grabber>();
+
+    }
+    catch (...)
+    {
+        throw DeviceNotFoundException("Kinect V2 not found");
+    }
+    
+    if (_kinect2grabber == nullptr)
+    {
+        throw DeviceNotFoundException("Kinect V2 not found");
+    }
 
 	// RB: Coœ jest nie tak w implementacji Kinect2Grabber 
 	// i w przypadku gdy utworzy siê jego obiekt,
 	// a nastêpnie bez wystartowania obiekt zostanie zwolniony,
 	// to wywala program. Dlatego te¿ na razie od razu robiê start.
 	//_kinect2grabber->start(); // przeniesino do Start(), ale nadal musi byæ w konstruktorze.
-
     Start();
+
 
 }
 
@@ -33,9 +46,9 @@ KinectV2::~KinectV2()
 void
 KinectV2::Start()
 {
-	LOG("KinectV2::Start()")
+    LOG("KinectV2::Start()")
 
-	_kinect2grabber->start();
+    _kinect2grabber->start();
 
     // Retrieved Point Cloud Callback Function
 	std::function<void( const pcl::PointCloud<PointType>::ConstPtr& )> callbackFunction =
@@ -44,18 +57,12 @@ KinectV2::Start()
             //LOG("KinectV2::Start() - callbackFunction")
             
             // Sekcja krytyczna. //
-            // Jeœli dobrze rozumiem, to tutaj bezwzglêdnie zawsze zak³adamy blokadê,
-            // poniewa¿ nie chcemy ograniczaæ mo¿liwoœci przechwytywania kolejnych chmur z kinecta.
+
             boost::mutex::scoped_lock lock( this->_mutex ); 
             
             /* Point Cloud Processing */
-            // todo: Tutaj kopiowaæ do kolejki?
 
             this->_pointCloud = ptr->makeShared();
-
-            //pcl::io::savePCDFileASCII("ascii-frame" + std::to_string(frame), *cloud);
-            //pcl::io::savePCDFileBinary("binary-frame" + std::to_string(frame), *cloud);
-            //frame++;
 
             // Koniec sekcji krytycznej. //
         };
@@ -71,6 +78,7 @@ KinectV2::Start()
     {
         LOG("_kinect2grabber->registerCallback unsuccessful :(")
         LOG("what: " << e.what())
+        throw DeviceNotFoundException("registerCallback failed in Kinect V2"); // Ma to sens tylko dopóki metoda start jest wywo³ywana w konstruktorze.
     }
     catch(...)
     {

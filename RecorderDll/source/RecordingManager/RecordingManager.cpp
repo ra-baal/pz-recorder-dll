@@ -8,8 +8,8 @@
 
 RecordingManager::RecordingManager()
 {
-	_recorder1 = std::make_shared<KinectV1>();
-	_recorder2 = std::make_shared<KinectV2>();
+	findRecorders();
+
 	_colors = new Colors[2];
 
 	// OpóŸnienie, aby kinecty na pewno by³y gotowe (kinect V2 omija³ pierwsz¹ chmurê).
@@ -39,7 +39,27 @@ RecordingManager::~RecordingManager()
 	delete[] _colors;
 }
 
-/// ToDo: _recorder1 i _recorder nigdy nie s¹ nullem.
+void
+RecordingManager::findRecorders()
+{
+	try {
+		_recorder1 = std::make_shared<KinectV1>();
+	}
+	catch (DeviceNotFoundException& e) {
+		LOG("Kinecta V1 not found.")
+		_recorder1 = nullptr;
+	}
+
+	try {
+		_recorder2 = std::make_shared<KinectV2>();
+	}
+	catch (DeviceNotFoundException& e) {
+		LOG("Kinect V2 not found.")
+		_recorder2 = nullptr;
+	}
+
+}
+
 int
 RecordingManager::GetRecordersNumber()
 {
@@ -59,16 +79,20 @@ RecordingManager::GetRecordersNumber()
 Colors*
 RecordingManager::GetColorBitmaps()
 {
-	_colors[0] = _recorder1->GetColorPixels();
-	_colors[1] = _recorder2->GetColorPixels();
+	_colors[0] = _recorder1 ? _recorder1->GetColorPixels() : Colors();
+	_colors[1] = _recorder2 ? _recorder2->GetColorPixels() : Colors();
+
 	return _colors;
 }
 
 void
 RecordingManager::StartRecording()
 {
+	if (GetRecordersNumber() == 0)
+		return;
+
 	_recording = true;
-	std::chrono::milliseconds interval(500);
+	std::chrono::milliseconds interval(750);
 	
 	_recordingThread = std::thread([this, interval]()
 	{
@@ -81,37 +105,50 @@ RecordingManager::StartRecording()
 		std::string path = _mainDirectory + "/" + std::to_string(time(nullptr)) + "/";
 		CreateDirectory(path.c_str(), nullptr);
 
+		std::thread t1;
+		std::thread t2;
+
 		while(_recording)
 		{
 			auto start = std::chrono::high_resolution_clock::now(); 
 			auto target = start + interval;
 
-			std::thread t1([this, frameNumber, &filenames1, path]() {
-				auto t1_start = std::chrono::high_resolution_clock::now(); // Potrzeben tylko do logu.
+			if (_recorder1 != nullptr)
+			{
+				t1 = std::thread([this, frameNumber, &filenames1, path]() {
+					auto t1_start = std::chrono::high_resolution_clock::now(); // Potrzeben tylko do logu.
+
+					std::string filename = "kinectv1-" + std::to_string(frameNumber) + ".pcd";
+					_recorder1->RecordOneFrame(path + filename);
+
+					filenames1.push_back(filename);
+
+					auto kinectV1FrameTime = std::chrono::high_resolution_clock::now() - t1_start; // Potrzeben tylko do logu.
+					LOG( "v1FrameTime: " << (kinectV1FrameTime.count() / 1000000) << " milliseconds" )
+				});
+			}
 
 
-				std::string filename = "kinectv1-" + std::to_string(frameNumber) + ".pcd";
-				_recorder1->RecordOneFrame(path + filename);
-				filenames1.push_back(filename);
-
-				auto kinectV1FrameTime = std::chrono::high_resolution_clock::now() - t1_start; // Potrzeben tylko do logu.
-				LOG( "v1FrameTime: " << (kinectV1FrameTime.count() / 1000000) << " milliseconds" )
-			});
-
-			std::thread t2([this, frameNumber, &filenames2, path]() {
-				auto t2_start2 = std::chrono::high_resolution_clock::now(); // Potrzeben tylko do logu.
+			if (_recorder2 != nullptr)
+			{
+				t2 = std::thread([this, frameNumber, &filenames2, path]() {
+					auto t2_start2 = std::chrono::high_resolution_clock::now(); // Potrzeben tylko do logu.
 
 
-				std::string filename = "kinectv2-" + std::to_string(frameNumber) + ".pcd";
-				_recorder2->RecordOneFrame(path + filename);
-				filenames2.push_back(filename);
+					std::string filename = "kinectv2-" + std::to_string(frameNumber) + ".pcd";
+					_recorder2->RecordOneFrame(path + filename);
+					filenames2.push_back(filename);
 
-				auto kinectV2FrameTime = std::chrono::high_resolution_clock::now() - t2_start2; // Potrzebne tylko do logu.
-				LOG( "v2FrameTime: " << (kinectV2FrameTime.count() / 1000000) << " milliseconds" )
-			});
+					auto kinectV2FrameTime = std::chrono::high_resolution_clock::now() - t2_start2; // Potrzebne tylko do logu.
+					LOG( "v2FrameTime: " << (kinectV2FrameTime.count() / 1000000) << " milliseconds" )
+				});
+			}
 			
-			t1.join();
-			t2.join();
+			if (t1.joinable())
+				t1.join();
+
+			if (t2.joinable())
+				t2.join();
 
 			frameNumber++; // Musi byæ po joinach.
 
@@ -157,6 +194,7 @@ RecordingManager::StopRecording()
 {
 	_recording = false;
 	
-	_recordingThread.join();
+	if (_recordingThread.joinable())
+		_recordingThread.join();
 
 }

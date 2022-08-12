@@ -6,15 +6,17 @@ KinectV1Grabber::KinectV1Grabber() :
 	_viewerWasStopped(false)
 {
 	pcl::io::openni2::OpenNI2DeviceManager manager;
+
 	_device = manager.getAnyDevice();
 	
 	if (_device == nullptr)
-        throw DeviceNotFoundException("Nie znaleziono Kinecta V1.");
+        throw DeviceNotFoundException("Kinect V1 not found");
 
 	_device->setSynchronization(true);
 
 
 	_setStreams();
+
 }
 
 void KinectV1Grabber::_setStreams()

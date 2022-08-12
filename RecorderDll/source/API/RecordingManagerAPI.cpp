@@ -2,7 +2,7 @@
 #include "../RecordingManager/IRecordingManager.h"
 #include "../RecordingManager/RecordingManager.h"
 
-#define DLL_VERSION 220811 // 22-08-11
+#define DLL_VERSION 220812 // 22-08-12
 
 int RecordingManager_Version()
 {

@@ -45,41 +45,57 @@ namespace pcl
     , signal_PointXYZRGB( nullptr )
     , signal_PointXYZRGBA( nullptr )
     {
-        LOG("pcl::Kinect2Grabber::Kinect2Grabber()")
+        LOG("pcl::Kinect2Grabber::Kinect2Grabber()");
 
         // Create Sensor Instance
         result = GetDefaultKinectSensor( &sensor );
         if( FAILED( result ) ){
+            LOG( "Exception : GetDefaultKinectSensor()" );
             throw std::exception( "Exception : GetDefaultKinectSensor()" );
         }
         
         // Open Sensor
         result = sensor->Open();
         if( FAILED( result ) ){
+            LOG( "Exception : IKinectSensor::Open()" );
             throw std::exception( "Exception : IKinectSensor::Open()" );
         }
 
+        // Jeœli po metodzie Open w³asnoœæ isAvailable jest fa³szem,
+        // to znaczy, ¿e nieznaleziono kinecta.
+        byte isAvailable;
+        sensor->get_IsAvailable(&isAvailable);
+        if (isAvailable == 0)
+        {   
+            SafeRelease(sensor);
+            throw DeviceNotFoundException("Kinect V2 not found");
+        }
+            
         // Retrieved Coordinate Mapper
         result = sensor->get_CoordinateMapper( &mapper );
         if( FAILED( result ) ){
+            LOG( "Exception : IKinectSensor::get_CoordinateMapper()" );
             throw std::exception( "Exception : IKinectSensor::get_CoordinateMapper()" );
         }
 
         // Retrieved Color Frame Source
         result = sensor->get_ColorFrameSource( &colorSource );
         if( FAILED( result ) ){
+            LOG( "Exception : IKinectSensor::get_ColorFrameSource()" );
             throw std::exception( "Exception : IKinectSensor::get_ColorFrameSource()" );
         }
 
         // Retrieved Depth Frame Source
         result = sensor->get_DepthFrameSource( &depthSource );
         if( FAILED( result ) ){
+            LOG( "Exception : IKinectSensor::get_DepthFrameSource()" );
             throw std::exception( "Exception : IKinectSensor::get_DepthFrameSource()" );
         }
 
         // Retrieved Infrared Frame Source
         result = sensor->get_InfraredFrameSource( &infraredSource );
         if( FAILED( result ) ){
+            LOG( "Exception : IKinectSensor::get_InfraredFrameSource()" );
             throw std::exception( "Exception : IKinectSensor::get_InfraredFrameSource()" );
         }
 
@@ -87,16 +103,19 @@ namespace pcl
         IFrameDescription* colorDescription;
         result = colorSource->get_FrameDescription( &colorDescription );
         if( FAILED( result ) ){
+            LOG( "Exception : IColorFrameSource::get_FrameDescription()" );
             throw std::exception( "Exception : IColorFrameSource::get_FrameDescription()" );
         }
 
         result = colorDescription->get_Width( &colorWidth ); // 1920
         if( FAILED( result ) ){
+            LOG( "Exception : IFrameDescription::get_Width()" );
             throw std::exception( "Exception : IFrameDescription::get_Width()" );
         }
 
         result = colorDescription->get_Height( &colorHeight ); // 1080
         if( FAILED( result ) ){
+            LOG( "Exception : IFrameDescription::get_Height()" );
             throw std::exception( "Exception : IFrameDescription::get_Height()" );
         }
 
@@ -109,16 +128,19 @@ namespace pcl
         IFrameDescription* depthDescription;
         result = depthSource->get_FrameDescription( &depthDescription );
         if( FAILED( result ) ){
+            LOG( "Exception : IDepthFrameSource::get_FrameDescription()" );
             throw std::exception( "Exception : IDepthFrameSource::get_FrameDescription()" );
         }
 
         result = depthDescription->get_Width( &depthWidth ); // 512
         if( FAILED( result ) ){
+            LOG( "Exception : IFrameDescription::get_Width()" );
             throw std::exception( "Exception : IFrameDescription::get_Width()" );
         }
 
         result = depthDescription->get_Height( &depthHeight ); // 424
         if( FAILED( result ) ){
+            LOG( "Exception : IFrameDescription::get_Height()" );
             throw std::exception( "Exception : IFrameDescription::get_Height()" );
         }
 
@@ -131,16 +153,19 @@ namespace pcl
         IFrameDescription* infraredDescription;
         result = infraredSource->get_FrameDescription( &infraredDescription );
         if( FAILED( result ) ){
+            LOG( "Exception : IInfraredFrameSource::get_FrameDescription()" );
             throw std::exception( "Exception : IInfraredFrameSource::get_FrameDescription()" );
         }
 
         result = infraredDescription->get_Width( &infraredWidth ); // 512
         if( FAILED( result ) ){
+            LOG( "Exception : IFrameDescription::get_Width()" );
             throw std::exception( "Exception : IFrameDescription::get_Width()" );
         }
 
         result = infraredDescription->get_Height( &infraredHeight ); // 424
         if( FAILED( result ) ){
+            LOG( "Exception : IFrameDescription::get_Height()" );
             throw std::exception( "Exception : IFrameDescription::get_Height()" );
         }
 
@@ -153,6 +178,9 @@ namespace pcl
         signal_PointXYZI = createSignal<signal_Kinect2_PointXYZI>();
         signal_PointXYZRGB = createSignal<signal_Kinect2_PointXYZRGB>();
         signal_PointXYZRGBA = createSignal<signal_Kinect2_PointXYZRGBA>();
+
+        LOG("pcl::Kinect2Grabber::Kinect2Grabber() - end")
+
     }
 
 
@@ -167,7 +195,8 @@ namespace pcl
         disconnect_all_slots<signal_Kinect2_PointXYZRGB>();
         disconnect_all_slots<signal_Kinect2_PointXYZRGBA>();
 
-        thread.join();
+        if (thread.joinable())
+            thread.join();
 
         // End Processing
         if( sensor ){

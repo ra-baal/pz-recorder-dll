@@ -9,7 +9,18 @@
 KinectV1::KinectV1() 
 {
 	LOG("KinectV1::KinectV1()")
-    _kinectV1Grabber = std::make_shared<KinectV1Grabber>();
+
+    try {
+        _kinectV1Grabber = std::make_shared<KinectV1Grabber>();
+    }
+    catch (...)
+    {
+        throw DeviceNotFoundException("Kinect V1 not found");
+    }
+    
+    if (_kinectV1Grabber == nullptr)
+        throw DeviceNotFoundException("Kinect V1 not found");
+
 }
 
 KinectV1::~KinectV1()
