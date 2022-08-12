@@ -13,9 +13,9 @@ namespace Recorder.ModelTests
             Console.WriteLine();
 
 
-            //RecordingManager_Test();
+            RecordingManager_Test();
             //RecordingManager_LivePreview_Test();
-            RecorderManager_SetDirectory_Test();
+            //RecorderManager_SetDirectory_Test();
 
             return 0;
         }
