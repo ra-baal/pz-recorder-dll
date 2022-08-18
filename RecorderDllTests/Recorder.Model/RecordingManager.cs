@@ -48,12 +48,12 @@ namespace Recorder.Model
 
         private (byte b, byte g, byte r)[] bgr32ColorsToBgrArray(Colors colors)
         {
-            (byte b, byte g, byte r)[] bitmap = new (byte r, byte g, byte b)[colors.Heigth * colors.Width];
+            (byte b, byte g, byte r)[] bitmap = new (byte r, byte g, byte b)[colors.Height * colors.Width];
             Bgr32* rgbquadPtr = (Bgr32*)colors.Data; // rgbquad <=> bgr32
 
             if (rgbquadPtr != null)
             {
-                for (int i = 0; i < colors.Width * colors.Heigth; i++)
+                for (int i = 0; i < colors.Width * colors.Height; i++)
                 {
                     byte* bytePtr = (byte*)rgbquadPtr; // RGBQUAD.rgbBlue
                     bitmap[i].b = *bytePtr;
@@ -75,12 +75,12 @@ namespace Recorder.Model
 
         private (byte b, byte g, byte r)[] rgb888ColorsToBgrArray(Colors colors)
         {
-            (byte b, byte g, byte r)[] bitmap = new (byte r, byte g, byte b)[colors.Heigth * colors.Width];
+            (byte b, byte g, byte r)[] bitmap = new (byte r, byte g, byte b)[colors.Height * colors.Width];
             Rgb24* rgb888 = (Rgb24*) colors.Data;
 
             if (rgb888 != null)
             {
-                for (int i = 0; i < colors.Width * colors.Heigth; i++)
+                for (int i = 0; i < colors.Width * colors.Height; i++)
                 {
                     byte* bytePtr = (byte*)rgb888; // RGBQUAD.rgbBlue
                     bitmap[i].r = *bytePtr;
