@@ -46,7 +46,7 @@ RecordingManager::findRecorders()
 		_recorder1 = std::make_shared<KinectV1>();
 	}
 	catch (DeviceNotFoundException& e) {
-		LOG("Kinecta V1 not found.")
+		LOG("Kinect V1 not found: " << e.what());
 		_recorder1 = nullptr;
 	}
 
@@ -54,7 +54,7 @@ RecordingManager::findRecorders()
 		_recorder2 = std::make_shared<KinectV2>();
 	}
 	catch (DeviceNotFoundException& e) {
-		LOG("Kinect V2 not found.")
+		LOG("Kinect V2 not found: " << e.what());
 		_recorder2 = nullptr;
 	}
 

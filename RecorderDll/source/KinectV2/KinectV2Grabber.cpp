@@ -1,4 +1,5 @@
 #include "KinectV2Grabber.h"
+#include <Windows.h>
 
 /// <summary>
 /// Zwalnia obiekty klas implementuj¹cych interfejsy,
@@ -61,14 +62,16 @@ namespace pcl
             throw std::exception( "Exception : IKinectSensor::Open()" );
         }
 
+
         // Jeœli po metodzie Open w³asnoœæ isAvailable jest fa³szem,
         // to znaczy, ¿e nieznaleziono kinecta.
+        std::this_thread::sleep_for(std::chrono::milliseconds(1750)); // Czekanie, bo nieraz kinect nie by³ dostêpny.
         byte isAvailable;
         sensor->get_IsAvailable(&isAvailable);
         if (isAvailable == 0)
         {   
             SafeRelease(sensor);
-            throw DeviceNotFoundException("Kinect V2 not found");
+            throw DeviceNotFoundException("pcl::Kinect2Grabber::Kinect2Grabber() - isAvailable == 0");
         }
             
         // Retrieved Coordinate Mapper

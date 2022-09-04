@@ -15,14 +15,19 @@ KinectV2::KinectV2()
 	    _kinect2grabber = std::make_shared<pcl::Kinect2Grabber>();
 
     }
+    catch (std::exception& e)
+    {
+        throw;
+        //throw DeviceNotFoundException(e.what());
+    }
     catch (...)
     {
-        throw DeviceNotFoundException("Kinect V2 not found");
+        throw DeviceNotFoundException("Kinect V2 not found - catch(...)");
     }
     
     if (_kinect2grabber == nullptr)
     {
-        throw DeviceNotFoundException("Kinect V2 not found");
+        throw DeviceNotFoundException("Kinect V2 not found - nullptr");
     }
 
 	// RB: Coœ jest nie tak w implementacji Kinect2Grabber 
