@@ -38,7 +38,7 @@ namespace Recorder.Model
     public unsafe struct Colors
     {
         public int Width;
-        public int Heigth;
+        public int Height;
         public ColorFormat Format;
         public void* Data;
     }
