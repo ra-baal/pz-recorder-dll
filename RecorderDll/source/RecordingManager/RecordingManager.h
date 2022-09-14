@@ -17,13 +17,16 @@ public:
 	virtual void StartRecording() override;
 	virtual void StopRecording() override;
 	virtual void SetDirectory(const char* str) override;
+	virtual void Merge() override;
 
 protected:
 	void findRecorders();
-	void RecordingManager::saveSettingsVrfilmFile(std::string directory, std::string settingsVrfilmFilename, int intervalSeconds, std::vector<std::string> pcdFilenames);
+	void saveSettingsVrfilmFile(std::string directory, std::string settingsVrfilmFilename, int intervalSeconds, std::vector<std::string> pcdFilenames);
 
 	std::shared_ptr<ICloudRecorder> _recorder1;
 	std::shared_ptr<ICloudRecorder> _recorder2;
+
+	std::string path;
 
 	Colors* _colors;
 

@@ -11,4 +11,5 @@
                 virtual void StartRecording() = 0;
                 virtual void StopRecording() = 0;
                 virtual void SetDirectory(const char* str) = 0;
+                virtual void Merge() = 0;
         };
